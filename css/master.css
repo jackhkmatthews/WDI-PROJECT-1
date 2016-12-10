@@ -9,8 +9,9 @@
 main {
     width: 300px;
     margin: 0 auto;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: bold;
+    text-align: center;
 }
 
 textarea {
@@ -18,4 +19,8 @@ textarea {
     height: 150px;
     border: 2px black solid;
     box-sizing: border-box;
+}
+
+span.correct {
+    color: green;
 }
