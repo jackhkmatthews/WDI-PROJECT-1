@@ -37,3 +37,46 @@
 //3. when user types code lights up
 //4. make lines appear line by line roughly in time with the music (get song length).
 //4. user input of text and song
+
+// var duration = 500;
+// var delayDuringLines = 500;
+// var delayBetweenLines = (delayDuringLines + (2*duration));
+//
+// var classNames = '';
+// for (var i = 0; i < game.linesArray.length; i++) {
+//   classNames += '.line' + i;
+//   classNames += ', ';
+// }
+//
+// classNames = classNames.substring(0, classNames.length - 2);
+//
+// console.log(classNames);
+//
+// $(classNames).each(function(i) {
+//   $(this).delay( i*(delayBetweenLines) ).slideDown(duration, function(){
+//     $(this).delay( (delayDuringLines) ).slideUp(duration);
+//   });
+// });
+
+// setInterval(checkHover, 1000);
+
+// displayLyrics: function displayLyrics(){
+//   game.$lyricContainerContainer.append(game.$linesContainer);
+//   $('#game').prepend(game.$lyricContainerContainer);
+//   game.currentCharacterIndex = 0;
+// },
+
+// testIfCorrectKey: function testIfCorrectKey(e){
+//   if (game.paragraphyTesting[game.currentCharacterIndex].innerHTML === String.fromCharCode(e.which)){
+//     console.log('pass!');
+//     var currentClass = '.' + [game.currentCharacterIndex];
+//     $(currentClass).addClass('correct');
+//     game.currentCharacterIndex += 1;
+//   } else {
+//     console.log('fails');
+//   }
+// },
+
+
+//playing the right music is the next big thing
+//time of animatinos comes after that

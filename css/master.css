@@ -8,7 +8,7 @@
 
 main {
     width: 300px;
-    margin: 0 auto;
+    margin: 30px auto;
     font-size: 13px;
     font-weight: bold;
     text-align: center;
@@ -23,4 +23,27 @@ textarea {
 
 span.correct {
     color: green;
+}
+
+.lyric-container {
+    height: 300px;
+    border: 1px black solid;
+    margin: 10px;
+    width: 279px;
+    position: relative;
+    overflow: hidden;
+}
+
+.lyric-container div {
+    border: 1px red solid;
+    position: absolute;
+    width: 100%;
+}
+
+.lyric-container-container {
+}
+
+video {
+    width:300px;
+    height:0px;
 }
