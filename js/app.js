@@ -28,6 +28,12 @@ var game = {
 
   currentCharacterIndex: 0,
 
+  linesArray: [],
+
+  linesContainer: '',
+
+  lineDiv: '',
+
   appendHtml: function appendHtml(){
     game.$html = game.createHtml();
     $('#game').append(game.$html);
@@ -88,47 +94,84 @@ var game = {
   },
 
   displayLyrics: function displayLyrics(){
-    var splitLyrics = game.lyricsHtml.split('<br>');
-    for (var i = 0; i < splitLyrics.length; i++) {
-      splitLyrics[i] = splitLyrics[i].replace('<p>', '');
-      splitLyrics[i] = splitLyrics[i].replace('</p>', '');
+    game.linesArray = game.lyricsHtml.split('<br>');
+    for (var i = 0; i < game.linesArray.length; i++) {
+      game.linesArray[i] = game.linesArray[i].replace('<p>', '');
+      game.linesArray[i] = game.linesArray[i].replace('</p>', '');
     }
-    console.log(splitLyrics);
+    console.log(game.linesArray);
 
-    var divs = document.createElement('div');
+    game.linesContainer = document.createElement('div');
 
-    for (var i = 0; i < splitLyrics.length; i++) {
-      var line = splitLyrics[i];
-      var div = document.createElement('div');
-      div.className = 'line' + i;
-      console.log(div);
+    for (var i = 0; i < game.linesArray.length; i++) {
+      var line = game.linesArray[i];
+      game.lineDiv = document.createElement('div');
+      game.lineDiv.className = 'line' + i;
+      console.log(game.lineDiv);
       for (var j = 0; j < line.length; j++) {
         var span = document.createElement('span');
         span.className = game.currentCharacterIndex;
         span.innerHTML = line[j];
-        // span.style.display = 'none'
         game.paragraphyHtml.push(span);
         game.paragraphyTesting.push(span);
-        div.appendChild(span);
-        div.style.display = 'none';
+        game.lineDiv.appendChild(span);
+        game.lineDiv.style.display = 'none';
         game.currentCharacterIndex += 1;
       }
       var lineBreak = document.createElement('br');
       game.paragraphyHtml.push(lineBreak);
-      divs.appendChild(div);
+      game.linesContainer.appendChild(game.lineDiv);
     }
 
-    console.log(divs);
+    console.log(game.linesContainer);
 
 
     var $div = $(document.createElement('div'));
-    // $div.append(game.paragraphyHtml);
-    $div.append(divs);
+    $div.append(game.linesContainer);
     $('#game').prepend($div);
 
     game.currentCharacterIndex = 0;
 
-    $('.line1').fadeIn();
+
+    // var an0 = function (){
+    //   $('.line0').slideDown();
+    // };
+    // var an1 = function (){
+    //   $('.line1').slideDown();
+    //   $('.line1').slideDown();
+    // };
+    // var an2 = function (){
+    //   $('.line2').slideDown();
+    //   $('.line2').slideDown();
+    // };
+    // var an3 = function (){
+    //   $('.line3').slideDown();
+    //   $('.line3').slideDown();
+    // };
+    //
+    // window.setTimeout(an0, 1000);
+    // window.setTimeout(an1, 2000);
+    // window.setTimeout(an2, 3000);
+    // window.setTimeout(an3, 4000);
+
+    var duration = 500;
+    var delayDuringLines = 500;
+    var delayBetweenLines = (delayDuringLines + (2*duration));
+
+    var classNames = '';
+    for (var i = 0; i < game.linesArray.length; i++) {
+      classNames += '.line' + i;
+      classNames += ', ';
+    }
+    classNames = classNames.substring(0, classNames.length - 2);
+
+    console.log(classNames);
+
+    $(classNames).each(function(i) {
+      $(this).delay( i*(delayBetweenLines) ).slideDown(duration, function(){
+        $(this).delay( (delayDuringLines) ).slideUp(duration);
+      });
+    });
 
   },
 
