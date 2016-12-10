@@ -34,3 +34,10 @@ backing track is playing.
 7. score cookie / leader board
 8. generate code lyrics from any set of lyrics and allow user input of audio and lyrics.
 9. each incorrect keypress added to a counter for an accuracy score
+
+
+
+
+
+<p>Daylight<br>I wake up feeling like you won't play right<br>I used to know, but now that shit don't feel right<br>It made me put away my pride<br>So long<br>You made a nigga wait for some, so long<br>You make it hard for a boy like that to know wrong<br>I'm wishing I could make this mine, oh<br></p>
+<p>If you want it, yeah<br>You can have it, oh, oh, oh<br>If you need it, ooh<br>We can make it, oh<br>If you want it<br>You can have it<br></p><p>But stay woke<br>Niggas creepin'<br>They gon' find you<br>Gon' catch you sleepin' (oh)<br>Now stay woke<br>Niggas creepin'<br>Now don't you close your eyes<br></p><p>Too late<br>You wanna make it right, but now it's too late<br>My peanut butter chocolate cake with Kool-Aid<br>I'm trying not to waste my time<br></p>

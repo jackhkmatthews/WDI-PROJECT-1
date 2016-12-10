@@ -89,36 +89,46 @@ var game = {
 
   displayLyrics: function displayLyrics(){
     var splitLyrics = game.lyricsHtml.split('<br>');
-    splitLyrics[0] = splitLyrics[0].replace('<p>', '');
-    splitLyrics.pop();
+    for (var i = 0; i < splitLyrics.length; i++) {
+      splitLyrics[i] = splitLyrics[i].replace('<p>', '');
+      splitLyrics[i] = splitLyrics[i].replace('</p>', '');
+    }
+    console.log(splitLyrics);
 
-    //inside each string of split lyrics
-    //create span element with id = currentCharacterIndex
-    //span.inner html = element of string
+    var divs = document.createElement('div');
 
     for (var i = 0; i < splitLyrics.length; i++) {
       var line = splitLyrics[i];
+      var div = document.createElement('div');
+      div.className = 'line' + i;
+      console.log(div);
       for (var j = 0; j < line.length; j++) {
         var span = document.createElement('span');
         span.className = game.currentCharacterIndex;
         span.innerHTML = line[j];
+        // span.style.display = 'none'
         game.paragraphyHtml.push(span);
         game.paragraphyTesting.push(span);
+        div.appendChild(span);
+        div.style.display = 'none';
         game.currentCharacterIndex += 1;
       }
       var lineBreak = document.createElement('br');
       game.paragraphyHtml.push(lineBreak);
+      divs.appendChild(div);
     }
 
-    console.log(game.paragraphyHtml);
+    console.log(divs);
 
 
     var $div = $(document.createElement('div'));
-    console.log(game.paragraphyHtml.toString());
-    $div.append(game.paragraphyHtml);
+    // $div.append(game.paragraphyHtml);
+    $div.append(divs);
     $('#game').prepend($div);
 
     game.currentCharacterIndex = 0;
+
+    $('.line1').fadeIn();
 
   },
 
@@ -141,10 +151,17 @@ var game = {
     } else {
       console.log('fails');
     }
+  },
+
+  displayLines: function displayLines(){
+
   }
+
 
 };
 
+
+//300000
 
 
 
