@@ -33,7 +33,7 @@ $('nigga').addEventListener('click', function(){
 });l
 
 var boy.doWrong;
-if (haveClimedEverest){
+if (haveClimbedEverest){
   boy.doWrong = true;
 } else {
   boy.doWrong = false
