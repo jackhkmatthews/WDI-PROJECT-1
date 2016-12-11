@@ -87,3 +87,6 @@
 //new lie counter +1 when line disappears
 //number of lines on screen counter
 //update check if correct key to include current line and current line - number of lines on screen.
+
+
+//line character index needs to be reset once end of line reached and when line has gone from screen.

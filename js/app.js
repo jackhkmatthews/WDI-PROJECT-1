@@ -46,6 +46,9 @@ var game = {
   currentLineIndex: 0,
 
   currentCharacterOnLineIndex: 0,
+  currentCharacterOnLineIndex0: 0,
+  currentCharacterOnLineIndex1: 0,
+  currentCharacterOnLineIndex2: 0,
 
   songDuration: 0,
 
@@ -205,13 +208,15 @@ var game = {
 
   checkLinePosition: function checkLinePosition(){
     var newLine = game.lineDivs[game.newLineIndex];
+    var currentLine = game.lineDivs[game.currentLineIndex];
     var top = (Math.random() * ((game.height*2) - 0) + 0) / (game.animationDuration/(game.songDuration/game.linesArray.length));
     var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
-    console.log(pix);
     if(pix > top){
       game.newLineIndex += 1;
       game.displayNewLine();
-    } else if (pix === 300){
+    }
+    pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
+    if (pix === 300){
       console.log('line should be removed');
       $(game.lineDivs[game.currentLineIndex]).remove();
       game.currentLineIndex += 1;
@@ -224,34 +229,37 @@ var game = {
   },
 
   testIfCorrectKey: function testIfCorrectKey(e){
-    console.log(game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex]);
+    console.log(game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex0]);
+    console.log(game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1]);
+    console.log(game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2]);
+    if (game.currentCharacterOnLineIndex0 === game.lineTesting[game.currentLineIndex].length){
+      game.currentCharacterOnLineIndex0 = 0;
+    }
+    if (game.currentCharacterOnLineIndex1 === game.lineTesting[game.currentLineIndex +1].length){
+      game.currentCharacterOnLineIndex0 = 0;
+    }
+    if (game.currentCharacterOnLineIndex2 === game.lineTesting[game.currentLineIndex+2].length){
+      game.currentCharacterOnLineIndex0 = 0;
+    }
     //first line on screen
     if (
-      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex0].innerHTML === String.fromCharCode(e.which)){
       console.log('pass!');
-      var currentClass = '.' + [game.currentCharacterOnLineIndex];
+      var currentClass = '.' + [game.currentCharacterOnLineIndex0];
       $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex += 1;
-    } else {
-      console.log('fails');
-    }
-    //second line on screen
-    if (
-      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      game.currentCharacterOnLineIndex0 += 1;
+    } else if ( //second line on screen
+      game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1].innerHTML === String.fromCharCode(e.which)){
       console.log('pass!');
-      var currentClass = '.' + [game.currentCharacterOnLineIndex];
+      currentClass = '.' + [game.currentCharacterOnLineIndex1];
       $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex += 1;
-    } else {
-      console.log('fails');
-    }
-    //third line on screen
-    if (
-      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      game.currentCharacterOnLineIndex1 += 1;
+    } else if (  //third line on screen
+      game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2].innerHTML === String.fromCharCode(e.which)){
       console.log('pass!');
-      var currentClass = '.' + [game.currentCharacterOnLineIndex];
+      currentClass = '.' + [game.currentCharacterOnLineIndex2];
       $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex += 1;
+      game.currentCharacterOnLineIndex2 += 1;
     } else {
       console.log('fails');
     }
