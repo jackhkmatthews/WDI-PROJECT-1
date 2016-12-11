@@ -6,10 +6,11 @@ function start(){
   game.appendHtml();
   game.makeSubmitListen();
   game.makeKeysListen();
-  setInterval(game.checkLinePosition, 2000);
   game.audioStuff();
   game.makeSongSubmitListen();
+  game.makeDurationSubmitListen();
   game.makePlayButtonListen();
+  setInterval(game.checkLinePosition, 2000);
 }
 
 var game = {
@@ -40,9 +41,19 @@ var game = {
 
   lineDivs: [],
 
+  newLineIndex: 0,
+
   currentLineIndex: 0,
 
   currentCharacterOnLineIndex: 0,
+
+  songDuration: 0,
+
+  animationDuration: 10000,
+
+  height: 300,
+
+  numberOfLinesOnScreen: 0,
 
   $linesContainer: $(document.createElement('div')).addClass('lyric-container'),
 
@@ -76,10 +87,31 @@ var game = {
 
   makePlayButtonListen: function makePlayButtonListen(){
     game.$button.on('click', function(){
-      game.displayNewLine();
+      game.displayCountDown();
       game.currentCharacterIndex = 0;
-      $('video').get(0).play();
     });
+  },
+
+  displayCountDown: function displayCountDown(){
+    var $h2 = $(document.createElement('h2'));
+    $h2.html(3);
+    $h2.attr('class', 'count-down');
+    $('#game').append($h2);
+    game.updateCountDown();
+  },
+
+  updateCountDown: function updateCountDown(){
+    setTimeout(function(){
+      $('.count-down').html(parseInt($('.count-down').get(0).innerHTML) - 1);
+      setTimeout(function(){
+        $('.count-down').html(parseInt($('.count-down').get(0).innerHTML) - 1);
+        setTimeout(function(){
+          game.displayNewLine();
+          $('video').get(0).play();
+          $('.count-down').remove();
+        }, 1000);
+      }, 1000);
+    }, 1000);
   },
 
   playAudio: function playAudio(e){
@@ -160,26 +192,30 @@ var game = {
   },
 
   displayNewLine: function displayNewLine(){
-    game.$lyricContainerContainer.html('');
-    game.$lyricContainerContainer.append(game.lineDivs[game.currentLineIndex]);
+    // game.$lyricContainerContainer.html('');
+    game.numberOfLinesOnScreen += 1;
+    game.$lyricContainerContainer.prepend(game.lineDivs[game.newLineIndex]);
     $('#game').prepend(game.$lyricContainerContainer);
     // game.currentCharacterIndex = 0;
-    $(game.lineDivs[game.currentLineIndex]).animate({
+    $(game.lineDivs[game.newLineIndex]).animate({
       top: '300'
-    }, 10000, 'linear' );
+    }, game.animationDuration, 'linear' );
     game.currentCharacterOnLineIndex = 0;
   },
 
   checkLinePosition: function checkLinePosition(){
-    var currentLine = game.lineDivs[game.currentLineIndex];
-    if($(currentLine).attr('style') === 'top: 300px;'){
-      console.log('next!');
-      //remove current div
-      //append new one and animate
-      game.currentLineIndex += 1;
+    var newLine = game.lineDivs[game.newLineIndex];
+    var top = (Math.random() * ((game.height*2) - 0) + 0) / (game.animationDuration/(game.songDuration/game.linesArray.length));
+    var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
+    console.log(pix);
+    if(pix > top){
+      game.newLineIndex += 1;
       game.displayNewLine();
-    } else {
-      console.log('not yet!');
+    } else if (pix === 300){
+      console.log('line should be removed');
+      $(game.lineDivs[game.currentLineIndex]).remove();
+      game.currentLineIndex += 1;
+      game.numberOfLinesOnScreen -= 1;
     }
   },
 
@@ -188,9 +224,10 @@ var game = {
   },
 
   testIfCorrectKey: function testIfCorrectKey(e){
-    console.log(game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex]);
+    console.log(game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex]);
+    //first line on screen
     if (
-      game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
       console.log('pass!');
       var currentClass = '.' + [game.currentCharacterOnLineIndex];
       $(currentClass).addClass('correct');
@@ -198,6 +235,27 @@ var game = {
     } else {
       console.log('fails');
     }
+    //second line on screen
+    if (
+      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      console.log('pass!');
+      var currentClass = '.' + [game.currentCharacterOnLineIndex];
+      $(currentClass).addClass('correct');
+      game.currentCharacterOnLineIndex += 1;
+    } else {
+      console.log('fails');
+    }
+    //third line on screen
+    if (
+      game.lineTesting[game.newLineIndex][game.currentCharacterOnLineIndex].innerHTML === String.fromCharCode(e.which)){
+      console.log('pass!');
+      var currentClass = '.' + [game.currentCharacterOnLineIndex];
+      $(currentClass).addClass('correct');
+      game.currentCharacterOnLineIndex += 1;
+    } else {
+      console.log('fails');
+    }
+
   },
 
   displayLines: function displayLines(){
@@ -246,10 +304,22 @@ var game = {
       $('aside').append($video);
       game.audioStuff();
     });
+  },
+
+  makeDurationSubmitListen: function makeDurationSubmitListen(){
+    $('#submit-duration').on('click', function(){
+      var mins = $('#mins').val();
+      var secs = $('#secs').val();
+      console.log(mins, secs);
+      game.songDuration = (mins*60000) + (secs*1000);
+    });
   }
 
 };
 
+
+//10000mils to cover 300px or box
+//(190000/linesArray1.length)
 
 //300000
 

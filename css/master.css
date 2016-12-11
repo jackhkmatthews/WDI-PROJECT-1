@@ -45,5 +45,17 @@ span.correct {
 
 video {
     width:300px;
-    height:0px;
+    height: 0px;
+}
+
+aside.song {
+    text-align: center;
+}
+
+textarea#user-duration {
+    height: 30px;
+}
+
+textarea#user-song {
+    height: 30px;
 }

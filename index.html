@@ -9,14 +9,31 @@
   </head>
   <body>
     <main id="game">
-    <form class="user-form" id="user-form" action="index.html" method="post">
-      <textarea name="user-text" rows="8" cols="80" id="user-text"></textarea>
-      <input type="button" value="Submit" id="submit">
-    </form>
-    <form class="user-song-form" id="user-song-form" action="index.html" method="post">
-      <textarea name="user-song" rows="8" cols="80" id="user-song"></textarea>
-      <input type="button" value="Submit" id="submit-song">
-    </form>
+      <form class="user-form" id="user-form" action="index.html" method="post">
+        <textarea name="user-text" rows="8" cols="80" id="user-text"></textarea>
+        <input type="button" value="Submit" id="submit">
+      </form>
+      <form class="user-song-form" id="user-song-form" action="index.html" method="post">
+        <textarea name="user-song" rows="8" cols="80" id="user-song"></textarea>
+        <input type="button" value="Submit" id="submit-song">
+      </form>
+      <form class="user-duration-form" id="user-duration-form" action="index.html" method="post">
+        <select name="select" id="mins">
+          <option value="0">0 min</option>
+          <option value="1">1 min</option>
+          <option value="2" selected>2 min</option>
+          <option value="3">3 min</option>
+        </select>
+        <select name="select" id="secs">
+          <option value="0">0 secs</option>
+          <option value="10">10 secs</option>
+          <option value="20" selected>20 secs</option>
+          <option value="30">30 secs</option>
+          <option value="40">40 secs</option>
+          <option value="50">50 secs</option>
+        </select>
+        <input type="button" value="Submit" id="submit-duration">
+      </form>
     </main>
     <aside class="song">
     </aside>
