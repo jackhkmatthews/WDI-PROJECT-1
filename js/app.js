@@ -139,7 +139,7 @@ var game = {
   playButtonCallback: function playButtonCallback(){
     this.startCountDown();
     this.currentCharacterIndex = 0;
-    setInterval(this.checkLinePosition, 500);
+    setInterval(this.checkLinePosition.bind(this), 500);
   },
 
   startCountDown: function startCountDown(){
@@ -170,14 +170,14 @@ var game = {
 
   submitCallback: function submitCallback(e){
     e.preventDefault();
-    this.getLyrics();
-    this.parseLyrics();
-    this.createLyricSpans();
-    this.getDuration();
-    this.handleAudio();
+    this.getLyrics.bind(this)();
+    this.parseLyrics.bind(this)();
+    this.createLyricSpans.bind(this)();
+    this.getDuration.bind(this)();
+    this.handleAudio.bind(this)();
   },
 
-  getLyrics: function getLyrics(){
+  getLyrics: function getLyrics() {
     this.userLyricsHtml = $('#user-lyrics-html').val();
   },
 
@@ -188,10 +188,9 @@ var game = {
       $(div).html(this.userLyricsHtml);
       this.lyricsString = div.textContent;
     }
-    makeLyricsAString.bind(this);
+    makeLyricsAString.bind(this)();
 
     function splitLinesIntoArrayElements(){
-      console.log(this.userLyricsHtml);
       var HtmlLinesArray = this.userLyricsHtml.split('<br>');
       for (var i = 0; i < HtmlLinesArray.length; i++) {
         var div = document.createElement('div');
@@ -200,7 +199,7 @@ var game = {
         this.linesArray.push(text);
       }
     }
-    splitLinesIntoArrayElements.bind(this);
+    splitLinesIntoArrayElements.bind(this)();
 
     function insertChoruses(){
       // //find chorus
@@ -226,7 +225,7 @@ var game = {
       //   }
       // }
     }
-    insertChoruses.bind(this);
+    insertChoruses.bind(this)();
 
     function removeEnters(){
       //remove enter (ascii 10)
@@ -239,7 +238,7 @@ var game = {
         }
       }
     }
-    removeEnters.bind(this);
+    removeEnters.bind(this)();
 
     function removeUnwantedStrings(){
       for (var j = 0; j < 100; j++) {
@@ -251,7 +250,7 @@ var game = {
         }
       }
     }
-    removeUnwantedStrings.bind(this);
+    removeUnwantedStrings.bind(this)();
 
   },
 
@@ -347,23 +346,20 @@ var game = {
     this.keysPressed += 1;
     for (var i = 0; i < 10; i++) {
       var className = this.linesOnScreen[i].className;
-      var selector = '.' + className + ' span:nth-child(' + (game.currentCharacterIndexes[i] + 1) +')';
+      var selector = '.' + className + ' span:nth-child(' + (this.currentCharacterIndexes[i] + 1) +')';
       if ($(selector)[0].innerHTML === String.fromCharCode(e.which)){
         var currentSpan = $(selector)[0];
-        console.log(currentSpan);
         $(currentSpan).addClass('correct');
-        console.log(game.currentCharacterIndexes[i]);
-        game.currentCharacterIndexes[i] += 1;
-        game.hit += 1;
+        this.currentCharacterIndexes[i] += 1;
+        this.hit += 1;
       }
     }
   },
 
   updateAccuracy: function updateAccuracy(){
-    console.log('pressed');
-    $('#hit').html('hit: ' + game.hit);
-    $('#missed').html('missed: ' + (game.keysPressed - game.hit));
-    $('#accuracy').html('accuracy: ' + Math.round((game.hit/game.keysPressed)*100) + '%');
+    $('#hit').html('hit: ' + this.hit);
+    $('#missed').html('missed: ' + (this.keysPressed - this.hit));
+    $('#accuracy').html('accuracy: ' + Math.round((this.hit/this.keysPressed)*100) + '%');
   },
 
   audioStuff: function audioStuff(){
