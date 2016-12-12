@@ -164,6 +164,29 @@ var game = {
       game.linesArray.push(text);
     }
 
+    debugger;
+
+    // var arr = [];
+    // arr[0] = "Jani";
+    // arr[1] = "Hege";
+    // arr[2] = "Stale";
+    // arr[3] = "Kai Jim";
+    // arr[4] = "Borge";
+    //
+    // console.log(arr.join());
+    // arr.splice(2, 0, "Lene");
+    // console.log(arr.join());
+
+    //find chorus
+    var chorusStart = game.linesArray.indexOf('[Chorus]') + 1;
+    var chorusEnd = game.linesArray.indexOf('[Verse 1]') -1;
+    //find chorus x5
+    var chorusInsert = game.linesArray.indexOf('[Chorus 5x]') +1;
+    //insert chorus
+    game.linesArray.splice(chorusInsert, 0, game.linesArray[chorusStart]);
+
+    debugger;
+
     //remove enter (ascii 10)
     for (var i = 0; i < game.linesArray.length; i++) {
       for (var j = 0; j < game.linesArray[i].length; j++) {
@@ -174,11 +197,7 @@ var game = {
       }
     }
 
-    //find chorus
-    //find chorus x1
-    //inesrt chorus
-
-    debugger;
+    // debugger;
 //remove unwanted strings
     for (var j = 0; j < 100; j++) {
       for (var i = 0; i < game.stringsToRemove.length; i++) {
