@@ -248,19 +248,21 @@ var game = {
       var currentClass = '.' + [game.currentCharacterOnLineIndex0];
       $(currentClass).addClass('correct');
       game.currentCharacterOnLineIndex0 += 1;
-    } else if ( //second line on screen
-      game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1].innerHTML === String.fromCharCode(e.which)){
-      console.log('pass!');
-      currentClass = '.' + [game.currentCharacterOnLineIndex1];
-      $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex1 += 1;
-    } else if (  //third line on screen
-      game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2].innerHTML === String.fromCharCode(e.which)){
-      console.log('pass!');
-      currentClass = '.' + [game.currentCharacterOnLineIndex2];
-      $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex2 += 1;
-    } else {
+    }
+    // else if ( //second line on screen
+    //   game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1].innerHTML === String.fromCharCode(e.which)){
+    //   console.log('pass!');
+    //   currentClass = '.' + [game.currentCharacterOnLineIndex1];
+    //   $(currentClass).addClass('correct');
+    //   game.currentCharacterOnLineIndex1 += 1;
+    // } else if (  //third line on screen
+    //   game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2].innerHTML === String.fromCharCode(e.which)){
+    //   console.log('pass!');
+    //   currentClass = '.' + [game.currentCharacterOnLineIndex2];
+    //   $(currentClass).addClass('correct');
+    //   game.currentCharacterOnLineIndex2 += 1;
+    // }
+    else {
       console.log('fails');
     }
 
