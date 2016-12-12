@@ -35,7 +35,7 @@ var game = {
   numberOfLinesOnScreen: 0,
   linesOnScreen: [],
   currentCharacterIndexes: [],
-  stringsToRemove: ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]'],
+  stringsToRemove: ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]'],
   $linesContainer: $(document.createElement('div')).addClass('lyric-container'),
   lyricsContainer: '',
   hit: 0,
@@ -43,12 +43,12 @@ var game = {
   keysPressed: 0,
 
   appendHtml: function appendHtml(){
-    game.html = game.createHtml();
-    $('body').prepend(game.html);
+    this.html = this.createHtml();
+    $('body').prepend(this.html);
   },
 
   createHtml: function createHtml(){
-    game.accuracyContainer = game.createAccuracyContainer();
+    this.accuracyContainer = this.createAccuracyContainer();
     game.lyricsContainer = game.createLyricsContainer();
     game.form = game.createForm();
     game.playButton = game.createPlayButton();
@@ -297,14 +297,14 @@ var game = {
 
     //potential for animate function when llineDivs vs LineTesting resolved
     $(game.lineDivs[game.newLineIndex]).animate({
-      top: '300'
+      top: game.height
     }, game.animationDuration, 'linear' );
   },
 
   checkLinePosition: function checkLinePosition(){
     var newLine = game.lineDivs[game.newLineIndex];
     var currentLine = game.lineDivs[game.currentLineIndex];
-    var top = ((Math.random() * (game.height*2) - 50) + 50) / (game.animationDuration/(game.songDuration/game.linesArray.length));
+    var top = game.height/(((game.linesArray.length)*game.animationDuration)/game.songDuration);
 
     //should new line be sent out
     var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);

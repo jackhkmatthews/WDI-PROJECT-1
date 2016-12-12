@@ -78,6 +78,12 @@
 // },
 
 //refactor code
+  //when creating element by ID dont create as a jquery object!
+  //game.lineDivs Vs game.lineTesting
 //show accuracy score
 //make inputs disappear on play
 //puase button
+
+
+//accuracy needs to be done on classes just before fiv disappears
+//need to get this in there
