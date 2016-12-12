@@ -41,6 +41,7 @@ var game = {
   hit: 0,
   missed: 0,
   keysPressed: 0,
+  time: 3,
 
   appendHtml: function appendHtml(){
     this.html = this.createHtml();
@@ -49,12 +50,12 @@ var game = {
 
   createHtml: function createHtml(){
     this.accuracyContainer = this.createAccuracyContainer();
-    game.lyricsContainer = game.createLyricsContainer();
-    game.form = game.createForm();
-    game.playButton = game.createPlayButton();
+    this.lyricsContainer = this.createLyricsContainer();
+    this.form = this.createForm();
+    this.playButton = this.createPlayButton();
     var main = document.createElement('main');
     $(main).attr('id', 'game');
-    $(main).append([game.accuracyContainer, game.lyricsContainer, game.form, game.playButton]);
+    $(main).append([this.accuracyContainer, this.lyricsContainer, this.form, this.playButton]);
     return main;
   },
 
@@ -132,70 +133,79 @@ var game = {
   },
 
   makePlayButtonListen: function makePlayButtonListen(){
-    $('#play').on('click', function(){
-      game.startCountDown();
-      game.currentCharacterIndex = 0;
-      setInterval(game.checkLinePosition, 500);
-    });
+    $('#play').on('click', this.playButtonCallback.bind(this))
+  },
+
+  playButtonCallback: function playButtonCallback(){
+    this.startCountDown();
+    this.currentCharacterIndex = 0;
+    setInterval(this.checkLinePosition, 500);
   },
 
   startCountDown: function startCountDown(){
     var h2 = document.createElement('h2');
-    $(h2).html(3);
+    $(h2).html(this.time);
     $(h2).attr('class', 'count-down');
     $('#game').prepend(h2);
-    var time = 3;
-    var countDown = setInterval(function(){
-      $('.count-down').html(--time);
-      if (time === 0) {
-        clearInterval(countDown);
-        $('.count-down').remove();
-        game.displayNewLine();
-        $('video').get(0).play();
-      }
-    }, 1000);
+    this.countDown();
+  },
 
+  countDown: function countDown(){
+    setInterval(this.countDownInterval.bind(this), 1000);
+  },
+
+  countDownInterval: function countDownInterval(){
+    $('.count-down').html(--this.time);
+    if (this.time === 0) {
+      clearInterval(this.countDown);
+      $('.count-down').remove();
+      this.displayNewLine();
+      $('video').get(0).play();
+    }
   },
 
   makeSubmitListen: function makeSubmitListen (){
-    $('#user-form').on('submit', function submitCallback(e){
-      e.preventDefault();
-      game.getLyrics();
-      game.parseLyrics();
-      game.createLyricSpans();
-      game.getDuration();
-      game.handleAudio();
-    });
+    $('#user-form').on('submit', this.submitCallback.bind(this));
+  },
+
+  submitCallback: function submitCallback(e){
+    e.preventDefault();
+    this.getLyrics();
+    this.parseLyrics();
+    this.createLyricSpans();
+    this.getDuration();
+    this.handleAudio();
   },
 
   getLyrics: function getLyrics(){
-    game.userLyricsHtml = $('#user-lyrics-html').val();
+    this.userLyricsHtml = $('#user-lyrics-html').val();
   },
 
   parseLyrics: function parseLyrics(){
 
     function makeLyricsAString(){
       var div = document.createElement('div');
-      $(div).html(game.userLyricsHtml);
-      game.lyricsString = div.textContent;
+      $(div).html(this.userLyricsHtml);
+      this.lyricsString = div.textContent;
     }
-    makeLyricsAString();
+    makeLyricsAString.bind(this);
 
     function splitLinesIntoArrayElements(){
-      var HtmlLinesArray = game.userLyricsHtml.split('<br>');
+      console.log(this.userLyricsHtml);
+      var HtmlLinesArray = this.userLyricsHtml.split('<br>');
       for (var i = 0; i < HtmlLinesArray.length; i++) {
         var div = document.createElement('div');
         div.innerHTML = HtmlLinesArray[i];
         var text = div.textContent;
-        game.linesArray.push(text);
+        this.linesArray.push(text);
       }
     }
-    splitLinesIntoArrayElements();
+    splitLinesIntoArrayElements.bind(this);
 
     function insertChoruses(){
       // //find chorus
-      // var chorusStart = game.linesArray.indexOf('[Chorus]') + 1;
-      // var chorusEnd = game.linesArray.indexOf('[Verse 1]') -1;
+      // var chorusStart = this.linesArray.indexOf('[Chorus]') + 1;
+      // var chorusEnd = this.linesArray.indexOf('[Verse 1]') -1;
       //
       // //insert choruses after required x1 - x5 etc
       // for (var repeat = 0; repeat <= 10; repeat++) {
@@ -204,77 +214,77 @@ var game = {
       //     index = '[Chorus]';
       //     console.log(index);
       //   }
-      //   var chorusInsert = game.linesArray.indexOf(index) +1;
+      //   var chorusInsert = this.linesArray.indexOf(index) +1;
       //   //insert chorus
       //   console.log(chorusInsert);
       //   if (chorusInsert > 0){
       //     for (var j = 0; j <= repeat; j++) {
       //       for (var i = 0; i <= (chorusEnd-chorusStart); i++) {
-      //         game.linesArray.splice(chorusInsert, 0, game.linesArray[chorusEnd - i]);
+      //         this.linesArray.splice(chorusInsert, 0, this.linesArray[chorusEnd - i]);
       //       }
       //     }
       //   }
       // }
     }
-    insertChoruses();
+    insertChoruses.bind(this);
 
     function removeEnters(){
       //remove enter (ascii 10)
-      for (var i = 0; i < game.linesArray.length; i++) {
-        for (var j = 0; j < game.linesArray[i].length; j++) {
-          var index = game.linesArray[i][j].indexOf(String.fromCharCode(10));
+      for (var i = 0; i < this.linesArray.length; i++) {
+        for (var j = 0; j < this.linesArray[i].length; j++) {
+          var index = this.linesArray[i][j].indexOf(String.fromCharCode(10));
           if (index > -1) {
-            game.linesArray[i] = '';
+            this.linesArray[i] = '';
           }
         }
       }
     }
-    removeEnters();
+    removeEnters.bind(this);
 
     function removeUnwantedStrings(){
       for (var j = 0; j < 100; j++) {
-        for (var i = 0; i < game.stringsToRemove.length; i++) {
-          var index = game.linesArray.indexOf(game.stringsToRemove[i]);
+        for (var i = 0; i < this.stringsToRemove.length; i++) {
+          var index = this.linesArray.indexOf(this.stringsToRemove[i]);
           if (index > -1) {
-            game.linesArray.splice(index, 1);
+            this.linesArray.splice(index, 1);
           }
         }
       }
     }
-    removeUnwantedStrings();
+    removeUnwantedStrings.bind(this);
 
   },
 
   createLyricSpans: function createLyricSpans(){
-    //creating array of line divs elements game.function create spans and line divs
-    for (var i = 0; i < game.linesArray.length; i++) {
-      var line = game.linesArray[i];
+    //creating array of line divs elements this.function create spans and line divs
+    for (var i = 0; i < this.linesArray.length; i++) {
+      var line = this.linesArray[i];
       var lineDiv = document.createElement('div');
       $(lineDiv).addClass('line' + i);
       var lineTesting = [];
       for (var j = 0; j < line.length; j++) {
         var span = document.createElement('span');
-        span.className = game.currentCharacterOnLineIndex;
-        game.currentCharacterOnLineIndex += 1;
+        span.className = this.currentCharacterOnLineIndex;
+        this.currentCharacterOnLineIndex += 1;
         $(span).html(line[j]);
-        // game.paragraphyHtml.push(span);
-        // game.paragraphyTesting.push(span);
+        // this.paragraphyHtml.push(span);
+        // this.paragraphyTesting.push(span);
         lineTesting.push(span);
         $(lineDiv).append(span);
       }
       // var lineBreak = document.createElement('br');
-      // game.paragraphyHtml.push(lineBreak);
-      // game.$linesContainer.append(lineDiv);
-      game.lineDivs.push(lineDiv);
-      game.lineTesting.push(lineTesting);
-      game.currentCharacterOnLineIndex = 0;
+      // this.paragraphyHtml.push(lineBreak);
+      // this.$linesContainer.append(lineDiv);
+      this.lineDivs.push(lineDiv);
+      this.lineTesting.push(lineTesting);
+      this.currentCharacterOnLineIndex = 0;
     }
   },
 
   getDuration: function getDuration(){
     var mins = $('#mins').val();
     var secs = $('#secs').val();
-    game.songDuration = (mins*60000) + (secs*1000);
+    this.songDuration = (mins*60000) + (secs*1000);
   },
 
   handleAudio: function handleAudio(){
@@ -286,55 +296,57 @@ var game = {
     $(source).attr('type', 'video/mp4');
     $(video).append(source);
     $('#game').append(video);
-    game.audioStuff();
+    this.audioStuff();
   },
 
   displayNewLine: function displayNewLine(){
-    game.numberOfLinesOnScreen += 1;
-    $('.lyrics-container').prepend(game.lineDivs[game.newLineIndex]);
-    game.linesOnScreen.unshift(game.lineDivs[game.newLineIndex]);
-    game.currentCharacterIndexes.unshift(0);
+    this.numberOfLinesOnScreen += 1;
+    $('.lyrics-container').prepend(this.lineDivs[this.newLineIndex]);
+    this.linesOnScreen.unshift(this.lineDivs[this.newLineIndex]);
+    this.currentCharacterIndexes.unshift(0);
 
     //potential for animate function when llineDivs vs LineTesting resolved
-    $(game.lineDivs[game.newLineIndex]).animate({
-      top: game.height
-    }, game.animationDuration, 'linear' );
+    $(this.lineDivs[this.newLineIndex]).animate({
+      top: this.height
+    }, this.animationDuration, 'linear' );
   },
 
   checkLinePosition: function checkLinePosition(){
-    var newLine = game.lineDivs[game.newLineIndex];
-    var currentLine = game.lineDivs[game.currentLineIndex];
-    var top = game.height/(((game.linesArray.length)*game.animationDuration)/game.songDuration);
+    var newLine = this.lineDivs[this.newLineIndex];
+    var currentLine = this.lineDivs[this.currentLineIndex];
+    var top = this.height/(((this.linesArray.length)*this.animationDuration)/this.songDuration);
 
     //should new line be sent out
     var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
     if(pix > top){
-      game.newLineIndex += 1;
-      game.displayNewLine();
+      this.newLineIndex += 1;
+      this.displayNewLine();
     }
 
     //should old line be removed
     pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
     if (pix === 300){
-      $(game.lineDivs[game.currentLineIndex]).remove();
-      game.linesOnScreen.pop();
-      game.currentCharacterIndexes.pop();
-      game.currentLineIndex += 1;
-      game.numberOfLinesOnScreen -= 1;
+      $(this.lineDivs[this.currentLineIndex]).remove();
+      this.linesOnScreen.pop();
+      this.currentCharacterIndexes.pop();
+      this.currentLineIndex += 1;
+      this.numberOfLinesOnScreen -= 1;
     }
   },
 
   makeKeysListen: function makeKeysListen(){
-    $(window).on('keypress', function keyCallback(e){
-      game.updateAccuracy();
-      game.testIfCorrectKey(e);
-    });
+    $(window).on('keypress', this.keyCallback.bind(this));
+  },
+
+  keyCallback: function keyCallback(e){
+    this.updateAccuracy();
+    this.testIfCorrectKey(e);
   },
 
   testIfCorrectKey: function testIfCorrectKey(e){
-    game.keysPressed += 1;
+    this.keysPressed += 1;
     for (var i = 0; i < 10; i++) {
-      var className = game.linesOnScreen[i].className;
+      var className = this.linesOnScreen[i].className;
       var selector = '.' + className + ' span:nth-child(' + (game.currentCharacterIndexes[i] + 1) +')';
       if ($(selector)[0].innerHTML === String.fromCharCode(e.which)){
         var currentSpan = $(selector)[0];
