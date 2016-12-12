@@ -90,3 +90,6 @@
 
 
 //line character index needs to be reset once end of line reached and when line has gone from screen.
+
+
+//need to increase speed of line removal

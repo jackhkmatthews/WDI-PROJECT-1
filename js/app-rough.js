@@ -31,3 +31,71 @@ function start() {
   console.log(String.fromCharCode(118));
 
 }
+
+
+if (
+  game.linesOnScreen[game.linesOnScreen.length-1][game.currentCharacterIndexes[game.currentCharacterIndexes.length-1]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-1];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-1];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-1] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-2][game.currentCharacterIndexes[game.currentCharacterIndexes.length-2]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-2];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-2];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-2] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-3][game.currentCharacterIndexes[game.currentCharacterIndexes.length-3]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-3];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-3];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-3] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-4][game.currentCharacterIndexes[game.currentCharacterIndexes.length-4]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-4];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-4];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-4] += 1;
+} else {
+  console.log('fails');
+}
+
+
+
+
+if (
+  game.linesOnScreen[game.linesOnScreen.length-1][game.currentCharacterIndexes[game.currentCharacterIndexes.length-1]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-1];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-1];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-1] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-2][game.currentCharacterIndexes[game.currentCharacterIndexes.length-2]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-2];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-2];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-2] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-3][game.currentCharacterIndexes[game.currentCharacterIndexes.length-3]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-3];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-3];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-3] += 1;
+} else if (
+  game.linesOnScreen[game.linesOnScreen.length-4][game.currentCharacterIndexes[game.currentCharacterIndexes.length-4]].innerHTML === String.fromCharCode(e.which)){
+  console.log('pass!');
+  var currentClass = '.' + game.currentCharacterIndexes[game.currentCharacterIndexes.length-4];
+  var currentSpan = $(currentClass)[game.numberOfLinesOnScreen-4];
+  $(currentSpan).addClass('correct');
+  game.currentCharacterIndexes[game.currentCharacterIndexes.length-4] += 1;
+} else {
+  console.log('fails');
+}

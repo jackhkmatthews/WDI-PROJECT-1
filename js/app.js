@@ -10,7 +10,6 @@ function start(){
   game.makeSongSubmitListen();
   game.makeDurationSubmitListen();
   game.makePlayButtonListen();
-  setInterval(game.checkLinePosition, 2000);
 }
 
 var game = {
@@ -35,6 +34,8 @@ var game = {
 
   currentCharacterIndex: 0,
 
+  currentCharacterOnLineIndex: 0,
+
   linesArray: [],
 
   lineDiv: '',
@@ -45,18 +46,19 @@ var game = {
 
   currentLineIndex: 0,
 
-  currentCharacterOnLineIndex: 0,
-  currentCharacterOnLineIndex0: 0,
-  currentCharacterOnLineIndex1: 0,
-  currentCharacterOnLineIndex2: 0,
-
   songDuration: 0,
 
-  animationDuration: 10000,
+  animationDuration: 20000,
 
   height: 300,
 
   numberOfLinesOnScreen: 0,
+
+  linesOnScreen: [],
+
+  currentCharacterIndexes: [],
+
+  stringsToRemove: ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]'],
 
   $linesContainer: $(document.createElement('div')).addClass('lyric-container'),
 
@@ -92,6 +94,7 @@ var game = {
     game.$button.on('click', function(){
       game.displayCountDown();
       game.currentCharacterIndex = 0;
+      setInterval(game.checkLinePosition, 500);
     });
   },
 
@@ -161,13 +164,32 @@ var game = {
       game.linesArray.push(text);
     }
 
-
-
-
+    //remove enter (ascii 10)
     for (var i = 0; i < game.linesArray.length; i++) {
-      game.linesArray[i] = game.linesArray[i].replace('<p>', '');
-      game.linesArray[i] = game.linesArray[i].replace('</p>', '');
+      for (var j = 0; j < game.linesArray[i].length; j++) {
+        var index = game.linesArray[i][j].indexOf(String.fromCharCode(10));
+        if (index > -1) {
+          game.linesArray[i] = '';
+        }
+      }
     }
+
+    //find chorus
+    //find chorus x1
+    //inesrt chorus
+
+    debugger;
+//remove unwanted strings
+    for (var j = 0; j < 100; j++) {
+      for (var i = 0; i < game.stringsToRemove.length; i++) {
+        var index = game.linesArray.indexOf(game.stringsToRemove[i]);
+        if (index > -1) {
+          game.linesArray.splice(index, 1);
+        }
+      }
+    }
+
+
     for (var i = 0; i < game.linesArray.length; i++) {
       var line = game.linesArray[i];
       game.lineDiv = document.createElement('div');
@@ -195,9 +217,10 @@ var game = {
   },
 
   displayNewLine: function displayNewLine(){
-    // game.$lyricContainerContainer.html('');
     game.numberOfLinesOnScreen += 1;
     game.$lyricContainerContainer.prepend(game.lineDivs[game.newLineIndex]);
+    game.linesOnScreen.unshift(game.lineTesting[game.newLineIndex]);
+    game.currentCharacterIndexes.unshift(0);
     $('#game').prepend(game.$lyricContainerContainer);
     // game.currentCharacterIndex = 0;
     $(game.lineDivs[game.newLineIndex]).animate({
@@ -209,7 +232,7 @@ var game = {
   checkLinePosition: function checkLinePosition(){
     var newLine = game.lineDivs[game.newLineIndex];
     var currentLine = game.lineDivs[game.currentLineIndex];
-    var top = (Math.random() * ((game.height*2) - 0) + 0) / (game.animationDuration/(game.songDuration/game.linesArray.length));
+    var top = (Math.random() * ((game.height*2) - 50) + 50) / (game.animationDuration/(game.songDuration/game.linesArray.length));
     var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
     if(pix > top){
       game.newLineIndex += 1;
@@ -219,6 +242,8 @@ var game = {
     if (pix === 300){
       console.log('line should be removed');
       $(game.lineDivs[game.currentLineIndex]).remove();
+      game.linesOnScreen.pop();
+      game.currentCharacterIndexes.pop();
       game.currentLineIndex += 1;
       game.numberOfLinesOnScreen -= 1;
     }
@@ -229,43 +254,22 @@ var game = {
   },
 
   testIfCorrectKey: function testIfCorrectKey(e){
-    console.log(game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex0]);
-    console.log(game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1]);
-    console.log(game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2]);
-    if (game.currentCharacterOnLineIndex0 === game.lineTesting[game.currentLineIndex].length){
-      game.currentCharacterOnLineIndex0 = 0;
+    //test each array (line) withing the lines on screen array
+    //will need a charater index array as well
+    //if key matches then turn green
+    //game.linesOnScreen.length-1
+    console.log('before loop');
+    for (var i = 0; i < 10; i++) {
+      console.log('in loop');
+      if (
+        game.linesOnScreen[i][game.currentCharacterIndexes[i]].innerHTML === String.fromCharCode(e.which)){
+        console.log('pass!');
+        var currentClass = '.' + game.currentCharacterIndexes[i];
+        var currentSpan = $(currentClass)[i];
+        $(currentSpan).addClass('correct');
+        game.currentCharacterIndexes[i] += 1;
+      }
     }
-    if (game.currentCharacterOnLineIndex1 === game.lineTesting[game.currentLineIndex +1].length){
-      game.currentCharacterOnLineIndex0 = 0;
-    }
-    if (game.currentCharacterOnLineIndex2 === game.lineTesting[game.currentLineIndex+2].length){
-      game.currentCharacterOnLineIndex0 = 0;
-    }
-    //first line on screen
-    if (
-      game.lineTesting[game.currentLineIndex][game.currentCharacterOnLineIndex0].innerHTML === String.fromCharCode(e.which)){
-      console.log('pass!');
-      var currentClass = '.' + [game.currentCharacterOnLineIndex0];
-      $(currentClass).addClass('correct');
-      game.currentCharacterOnLineIndex0 += 1;
-    }
-    // else if ( //second line on screen
-    //   game.lineTesting[game.currentLineIndex +1][game.currentCharacterOnLineIndex1].innerHTML === String.fromCharCode(e.which)){
-    //   console.log('pass!');
-    //   currentClass = '.' + [game.currentCharacterOnLineIndex1];
-    //   $(currentClass).addClass('correct');
-    //   game.currentCharacterOnLineIndex1 += 1;
-    // } else if (  //third line on screen
-    //   game.lineTesting[game.currentLineIndex+2][game.currentCharacterOnLineIndex2].innerHTML === String.fromCharCode(e.which)){
-    //   console.log('pass!');
-    //   currentClass = '.' + [game.currentCharacterOnLineIndex2];
-    //   $(currentClass).addClass('correct');
-    //   game.currentCharacterOnLineIndex2 += 1;
-    // }
-    else {
-      console.log('fails');
-    }
-
   },
 
   displayLines: function displayLines(){
