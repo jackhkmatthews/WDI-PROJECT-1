@@ -45,7 +45,7 @@ span.correct {
 
 video {
     width:300px;
-    height: 0px;
+    height: 117px;
 }
 
 aside.song {
@@ -58,4 +58,20 @@ textarea#user-duration {
 
 textarea#user-song {
     height: 30px;
+}
+
+.lyrics-container {
+    height: 300px;
+    border: 2px black solid;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+form#user-form {
+    margin: 10px;
+}
+
+.lyrics-container div {
+    position: absolute;
 }

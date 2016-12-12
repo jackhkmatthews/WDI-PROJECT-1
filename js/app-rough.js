@@ -99,3 +99,22 @@ if (
 } else {
   console.log('fails');
 }
+
+
+testIfCorrectKey: function testIfCorrectKey(e){
+  for (var i = 0; i < 10; i++) {
+    debugger;
+    var class = game.linesOnScreen[i].className;
+    if (game.linesOnScreen[i][game.currentCharacterIndexes[i]].innerHTML === String.fromCharCode(e.which)){
+      // console.log('pass!');
+      var currentClass = '.' + game.currentCharacterIndexes[i];
+      // var lineClass =
+      var currentSpan = $(currentClass)[i];
+      console.log(currentSpan);
+      $(currentSpan).addClass('correct');
+      console.log(game.currentCharacterIndexes[i]);
+      game.currentCharacterIndexes[i] += 1;
+
+    }
+  }
+},

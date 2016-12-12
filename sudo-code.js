@@ -77,19 +77,7 @@
 //   }
 // },
 
-
-//playing the right music after delay of play click
-  //count down timmer DONE
-//time of animatinos comes after that
-  //keep animation speed the same, triggering of new animation is key
-
-
-//new lie counter +1 when line disappears
-//number of lines on screen counter
-//update check if correct key to include current line and current line - number of lines on screen.
-
-
-//line character index needs to be reset once end of line reached and when line has gone from screen.
-
-
-//need to increase speed of line removal
+//refactor code
+//show accuracy score
+//make inputs disappear on play
+//puase button
