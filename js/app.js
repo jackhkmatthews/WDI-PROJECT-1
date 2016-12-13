@@ -6,6 +6,7 @@ function start(){
   Redbone.addToNav();
   Lyrics.addToNav();
   Import.addToNav();
+  $('#nav li:first').addClass('highlighted');
   Redbone.start();
 }
 
@@ -43,14 +44,15 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
   this.audio;
 
   this.start = function start(){
+    $('audio').remove();
     $('main').html('').attr('id', this.id);
     this.createHtml();
     this.appendHtml();
     this.makeSubmitListen();
-    this.makePlayButtonListen();
     this.makeKeysListen();
     this.audioStuff();
     if (!userInputs) {
+      this.makePlayButtonListen();
       this.getLyrics.bind(this)();
       this.parseLyrics.bind(this)();
       this.createLyricSpans.bind(this)();
@@ -59,20 +61,14 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     }
   };
 
-  // this.resetPage = function resetPage(){
-  //   clearInterval(window.Redbone.checkLinePosition);
-  //   clearInterval(window.Import.checkLinePosition);
-  //   clearInterval(window.Lyrics.checkLinePosition);
-  //   $('main').html('').attr('id', this.id);
-  // };
-
   this.addToNav = function addToNav() {
     var nav     = document.getElementById('nav');
     var element = document.createElement('li');
     element.innerHTML = this.title;
     element.addEventListener('click', generate.bind(this));
-    function generate(){
-      this.audio.pause();
+    function generate(e){
+      $('#nav li').removeClass('highlighted');
+      $(e.target).addClass('highlighted');
       this.start();
     }
     nav.appendChild(element);
@@ -116,12 +112,12 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     $(form).attr('id', 'user-form');
 
     var textarea = document.createElement('textarea');
-    $(textarea).attr('placeholer', 'Lyrics Outer HTML');
+    $(textarea).attr('placeholder', 'Lyrics Outer HTML');
     $(textarea).attr('id', 'user-lyrics-html');
 
     var url = document.createElement('input');
     $(url).attr('type', 'text');
-    $(url).attr('placeholer', 'Youtube URL');
+    $(url).attr('placeholder', 'Youtube URL');
     $(url).attr('id', 'youtube-url');
 
     var mins = document.createElement('select');
@@ -163,7 +159,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
 
   this.createPlayButton = function createPlayButton(){
     var playButton = document.createElement('button');
-    $(playButton).html('play').attr('class', 'play');
+    $(playButton).html('Play').attr('class', 'play');
     $(playButton).attr('id', 'play');
     return playButton;
   },
@@ -185,20 +181,6 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
         $('.score').fadeIn(1000);
       });
     });
-
-
-
-
-
-    // $('#play').fadeOut('1500');
-    // $('.lyrics-container').animate({
-    //   height: this.height,
-    //   top: 140
-    // }, this.time*500, 'swing' );
-    // $('.score').animate({
-    //   display: 'none'
-    // }, this.time*1000, 'swing');
-    // console.log($('.lyrics-container')[0]);
     this.startCountDown();
     this.currentCharacterIndex = 0;
     this.interval2 = setInterval(this.checkLinePosition.bind(this), 500);
@@ -223,10 +205,13 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
       clearInterval(this.interval);
       this.displayNewLine();
       if(!userInputs){
-        this.audio = new Audio(this.songPath);
-        this.audio.play();
+        var audio = document.createElement('audio');
+        $(audio).attr('src', this.songPath);
+        $(audio).attr('id', 'song');
+        $(audio).css('display', 'none');
+        $('body').append(audio);
+        audio.play();
       } else {
-        console.log('user inputs');
         $('video').get(0).play();
       }
       $('.count-down').html('');
@@ -239,6 +224,8 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
 
   this.submitCallback = function submitCallback(e){
     e.preventDefault();
+    this.makePlayButtonListen();
+    $('#user-form').fadeOut('fast');
     this.getLyrics.bind(this)();
     this.parseLyrics.bind(this)();
     this.createLyricSpans.bind(this)();
@@ -272,32 +259,6 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     if (userInputs){
       splitLinesIntoArrayElements.bind(this)();
     }
-
-    function insertChoruses(){
-      // //find chorus
-      // var chorusStart = this.linesArray.indexOf('[Chorus]') + 1;
-      // var chorusEnd = this.linesArray.indexOf('[Verse 1]') -1;
-      //
-      // //insert choruses after required x1 - x5 etc
-      // for (var repeat = 0; repeat <= 10; repeat++) {
-      //   var index = '[Chorus ' + repeat + 'x]';
-      //   if (repeat === 0){
-      //     index = '[Chorus]';
-      //     console.log(index);
-      //   }
-      //   var chorusInsert = this.linesArray.indexOf(index) +1;
-      //   //insert chorus
-      //   console.log(chorusInsert);
-      //   if (chorusInsert > 0){
-      //     for (var j = 0; j <= repeat; j++) {
-      //       for (var i = 0; i <= (chorusEnd-chorusStart); i++) {
-      //         this.linesArray.splice(chorusInsert, 0, this.linesArray[chorusEnd - i]);
-      //       }
-      //     }
-      //   }
-      // }
-    }
-    insertChoruses.bind(this)();
 
     function removeEnters(){
       //remove enter (ascii 10)
@@ -409,8 +370,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
 
       //should old line be removed
       pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-      debugger;
-      if (pix > this.height*1.1){
+      if (pix > this.height*1.05){
         this.updatePercentage();
         $(this.lineDivs[this.currentLineIndex]).remove();
         this.linesOnScreen.pop();
