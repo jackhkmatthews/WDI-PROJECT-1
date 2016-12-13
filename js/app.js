@@ -39,10 +39,11 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   this.stringsToRemove = ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]'],
   this.$linesContainer = $(document.createElement('div')).addClass('lyric-container'),
   this.lyricsContainer = '',
-  this.hit = 0,
-  this.missed = 0,
-  this.keysPressed = 0,
   this.time = 3,
+  this.hit = 0;
+  this.total = 0;
+  this.missed = 0;
+  this.complete = 0;
 
   this.start = function start(){
     $('#game').html('');
@@ -74,17 +75,17 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   };
 
   this.createHtml = function createHtml(){
-    this.accuracyContainer = this.createAccuracyContainer();
+    this.percentageContainer = this.createPercentageContainer();
     this.lyricsContainer = this.createLyricsContainer();
     this.form = this.createForm();
     this.playButton = this.createPlayButton();
   },
 
   this.appendHtml = function appendHtml(){
-    $('#game').append([this.accuracyContainer, this.lyricsContainer, this.form, this.playButton]);
+    $('#game').append([this.percentageContainer, this.lyricsContainer, this.form, this.playButton]);
   },
 
-  this.createAccuracyContainer = function(){
+  this.createPercentageContainer = function(){
     var div = document.createElement('div');
     var h1 = document.createElement('h2');
     $(h1).attr('id', 'hit');
@@ -93,8 +94,8 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
     $(h2).attr('id', 'missed');
     $(h2).html('missed:');
     var h3 = document.createElement('h2');
-    $(h3).attr('id', 'accuracy');
-    $(h3).html('accuracy:');
+    $(h3).attr('id', 'percentage');
+    $(h3).html('percentage:');
     $(div).append([h1, h2, h3]);
     return div;
   },
@@ -370,7 +371,9 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
     //should old line be removed
     pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-    if (pix === 300){
+    if (pix === this.height){
+      console.log('once');
+      this.updatePercentage();
       $(this.lineDivs[this.currentLineIndex]).remove();
       this.linesOnScreen.pop();
       this.currentCharacterIndexes.pop();
@@ -384,12 +387,10 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.keyCallback = function keyCallback(e){
-    this.updateAccuracy();
     this.testIfCorrectKey(e);
   },
 
   this.testIfCorrectKey = function testIfCorrectKey(e){
-    this.keysPressed += 1;
     for (var i = 0; i < 10; i++) {
       var className = this.linesOnScreen[i].className;
       var selector = '.' + className + ' span:nth-child(' + (this.currentCharacterIndexes[i] + 1) +')';
@@ -397,15 +398,22 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
         var currentSpan = $(selector)[0];
         $(currentSpan).addClass('correct');
         this.currentCharacterIndexes[i] += 1;
-        this.hit += 1;
       }
     }
   },
 
-  this.updateAccuracy = function updateAccuracy(){
+  this.updatePercentage = function updatePercentage(){
+    var line = this.linesOnScreen[this.linesOnScreen.length -1];
+    var classOfLine = '.' + line.className;
+    var allSpans = classOfLine + ' span';
+    var correctClass = classOfLine + ' span.correct';
+    this.total += $(allSpans).length;
+    this.hit += $(correctClass).length;
+    this.missed = this.total - this.hit;
+    this.complete = this.hit / this.total;
     $('#hit').html('hit: ' + this.hit);
-    $('#missed').html('missed: ' + (this.keysPressed - this.hit));
-    $('#accuracy').html('accuracy: ' + Math.round((this.hit/this.keysPressed)*100) + '%');
+    $('#missed').html('missed: ' + this.missed);
+    $('#percentage').html('percentage: ' + Math.round(this.complete*100) + '%');
   },
 
   this.audioStuff = function audioStuff(){
