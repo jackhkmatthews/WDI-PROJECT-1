@@ -171,6 +171,15 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
   this.playButtonCallback = function playButtonCallback(){
     $('#play').off();
+    $('#play').fadeOut('slow');
+    $('.lyrics-container').animate({
+      height: this.height,
+      top: 140
+    }, this.time*1000, 'swing' );
+    $('.score').animate({
+      display: 'none'
+    }, this.time*1000, 'swing');
+    console.log($('.lyrics-container')[0]);
     this.startCountDown();
     this.currentCharacterIndex = 0;
     this.interval2 = setInterval(this.checkLinePosition.bind(this), 500);
@@ -180,6 +189,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
     var h2 = document.createElement('h2');
     $(h2).html(this.time);
     $(h2).attr('class', 'count-down');
+    $(h2).css('display', 'none');
     $('main').prepend(h2);
     this.countDown();
   },
@@ -375,8 +385,10 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
       //should old line be removed
       pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-      if (pix > this.height*1.2){
+      console.log(pix);
+      if (pix > this.height*1.1){
         this.updatePercentage();
+        console.log('should update percentage');
         $(this.lineDivs[this.currentLineIndex]).remove();
         this.linesOnScreen.pop();
         this.currentCharacterIndexes.pop();
@@ -463,14 +475,12 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'You made a nigga wait for some, so long',
   'You make it hard for a boy like that to know wrong',
   'I\'m wishing I could make this mine, oh',
-  '[Pre-Chorus]',
   'If you want it, yeah',
   'You can have it, oh, oh, oh',
   'If you need it, oooh',
   'We can make it, oh',
   'If you want it',
   'You can have it',
-  '[Chorus]',
   'But stay woke',
   'Niggas creepin',
   'They gon\' find you',
@@ -482,7 +492,6 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'You wanna make it right, but now it\'s too late',
   'My peanut butter chocolate cake with Kool-Aid',
   'I\'m trying not to waste my time',
-  '[Pre-Chorus]',
   'If you want it, oh',
   'You can have it, you can have it',
   'If you need it',
@@ -490,7 +499,6 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'We can make it',
   'If you want it',
   'You can have it, aaaaah',
-  '[Chorus]',
   'But stay woke',
   'Niggas creepin\'',
   'They gon\' find you',
@@ -516,13 +524,11 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'But stay woke'], 5, 27);
 
 var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/watch?v=q5jGFujaJ40', [
-  '[Intro: Wiley & Bushkin]',
   'Come off the stage! Move!',
   'They don\'t want to hear you! They don\'t want to hear you!',
   'What, is that what you think? Is that what you think?',
   'Oi blud, calm, calm, calm',
   'Lyrics for lyrics, calm',
-  '[, Skepta]',
   'Yeah, hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
@@ -531,7 +537,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
   'Lyrics for lyrics, calm',
-  '[Ver, Skepta]',
   'Yeah, you got murked last week',
   'Couldn\'t even get a rewind, that\'s peak',
   'Couldn\'t get out your punchlines on time',
@@ -548,7 +553,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'And your girl looks like she don\'t work',
   'Mental',
   'Man wouldn\'t beat that even if I was burse',
-  '[, Skepta]',
   'Yeah, hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
@@ -557,7 +561,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
   'Lyrics for lyrics, calm',
-  '[Ver, Skepta]',
   'Them man are fake, them man are sus',
   'I\'m the boss these pagans wanna touch',
   'I\'m the kind of boss that the opps gotta rush',
@@ -574,7 +577,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'You don\'t wanna diss me, that\'s long',
   'Cause I\'m a don, lyrically gone',
   'You want to clash but you\'re gonna get banged on',
-  '[, Skepta]',
   'Yeah, hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
@@ -583,7 +585,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
   'Lyrics for lyrics, calm',
-  '[Ver, Novelist]',
   'Yo, I\'m a king, lyrically ming',
   'You want to clash but you\'re gonna get tucked in',
   'Drew for the buck ting when I bucked him',
@@ -600,7 +601,6 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'It\'s not a ting to draw the ting if you wanna swing',
   'But if you get jooked, don\'t sing',
   'Not a long ting to do the hype ting',
-  '[, Skepta]',
   'Yeah, hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',

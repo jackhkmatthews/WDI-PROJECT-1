@@ -12,6 +12,13 @@ body {
   text-align: center;
 }
 
+header {
+  background-color: #ececec;
+  color: #0080ff;
+  margin-bottom: 40px;
+  box-shadow: 0px 7px 14px 2px rgba(0, 0, 0, 0.16);
+}
+
 nav {
   height: 60px;
   overflow: hidden;
@@ -33,15 +40,25 @@ nav ul li {
   line-height: 60px;
 }
 
+nav li:hover {
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+}
+
 .lyrics-container {
-  height: 400px;
+  /* height: 407px; */
   border top: 2px black solid;
-  position: relative;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
   overflow: hidden;
   width: 70%;
-  margin: 0 auto;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
+  /*margin: 0 auto;*/
+  border-top: 2px solid #ececec;
+  border-bottom: 2px solid #ececec;
+  /* background: radial-gradient(rgba(0, 0, 0, -0.15), rgba(0, 0, 0, 0)); */ /* Standard syntax */
+  top: 280px;
 }
 
 .lyric-container div {
@@ -59,16 +76,18 @@ h1 {
 
 div.score {
     font-size: 0.5em;
-    border: 2px solid white;
+    border: 2px solid #ececec;
     padding: 14px;
     position: absolute;
     margin: auto;
     left: 75%;
     right: 0;
-    top: -22%;
+    top: -13%;
     bottom: 0;
     width: 100px;
     height: 66px;
+    color: #ececec;
+    display: none;
 }
 
 video {
@@ -81,9 +100,9 @@ video {
     margin-right: auto;
     left: 0;
     right: 0;
-    border: 1px solid white;
+    border: 2px solid #ececec;
     color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0px 5px 40px 1px rgba(0, 0, 0, 0.7);
+    /* box-shadow: 0px 5px 40px 1px rgba(0, 0, 0, 0.7); */
     width: 70%;
     display: inline-block;
 }
@@ -100,4 +119,31 @@ video {
     margin: 0px;
     line-height: 1.8em;
     text-align: left;
+}
+
+nav li:hover {
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+li {}
+
+button#play {
+    height: 100px;
+    width: 200px;
+    background: rgb(0, 128, 255);
+    border: 2px solid #ececec;
+    color: white;
+    margin: 20px 0 58px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 30%;
+    bottom: 0;
+    z-index: 20;
+}
+
+button#play:focus {
+    outline: none;
 }
