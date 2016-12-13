@@ -10,7 +10,6 @@ function start(){
 }
 
 function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
-
   this.id = id;
   this.title = title;
   this.youtubeUrl = youtubeUrl;
@@ -66,13 +65,13 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   // };
 
   this.addToNav = function addToNav() {
-    var element = document.createElement('h2');
+    var nav     = document.getElementById('nav');
+    var element = document.createElement('li');
     element.innerHTML = this.title;
     element.addEventListener('click', generate.bind(this));
     function generate(){
       this.start();
     }
-    var nav = document.getElementById('nav');
     nav.appendChild(element);
   };
 
@@ -173,8 +172,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
     $('#play').off();
     this.startCountDown();
     this.currentCharacterIndex = 0;
-    this.interval = setInterval(this.checkLinePosition.bind(this), 500);
-    this.interval();
+    this.interval2 = setInterval(this.checkLinePosition.bind(this), 500);
   },
 
   this.startCountDown = function startCountDown(){
@@ -186,16 +184,16 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.countDown = function countDown(){
-    setInterval(this.countDownInterval.bind(this), 1000);
+    this.interval = setInterval(this.countDownInterval.bind(this), 1000);
   },
 
   this.countDownInterval = function countDownInterval(){
     $('.count-down').html(--this.time);
-    if (this.time === 0) {
-      clearInterval(this.countDown);
-      $('.count-down').remove();
+    if (this.time <= 0) {
+      clearInterval(this.interval);
       this.displayNewLine();
       $('video').get(0).play();
+      $('.count-down').html('');
     }
   },
 
@@ -329,6 +327,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
     $(video).attr('controls', 'true');
     var source = document.createElement('source');
     $(source).attr('id', 'song-source');
+    $(source).attr('height', '0');
     if (userInputs){
       $(source).attr('src', $('#youtube-url').val());
     } else {
@@ -354,16 +353,20 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
   this.checkLinePosition = function checkLinePosition(){
     if ($('main').attr('id') !== this.id){
-      clearInterval(this.interval);
+      clearInterval(this.interval2);
       console.log($('main').attr('id'), 'interval should clear');
     } else {
       var newLine = this.lineDivs[this.newLineIndex];
       var currentLine = this.lineDivs[this.currentLineIndex];
       var top = this.height/(((this.linesArray.length)*this.animationDuration)/this.songDuration);
 
-      //should new line be sent out
-      var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
-      if(pix > top){
+      // should new line be sent out
+      try {
+        var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
+      } catch(e) {
+        return false;
+      }
+      if (pix > top) {
         this.newLineIndex += 1;
         this.displayNewLine();
       }
@@ -390,13 +393,17 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.testIfCorrectKey = function testIfCorrectKey(e){
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < this.linesOnScreen.length; i++) {
       var className = this.linesOnScreen[i].className;
       var selector = '.' + className + ' span:nth-child(' + (this.currentCharacterIndexes[i] + 1) +')';
-      if ($(selector)[0].innerHTML === String.fromCharCode(e.which)){
-        var currentSpan = $(selector)[0];
-        $(currentSpan).addClass('correct');
-        this.currentCharacterIndexes[i] += 1;
+      try {
+        if ($(selector)[0].innerHTML === String.fromCharCode(e.which)){
+          var currentSpan = $(selector)[0];
+          $(currentSpan).addClass('correct');
+          this.currentCharacterIndexes[i] += 1;
+        }
+      } catch(e) {
+        return false;
       }
     }
   },
@@ -424,7 +431,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
         for (var j = 0, sl = sources.length; j < sl; j++) {
           var source = sources[j];
           var type = source.type;
-          var isMp4 = type.indexOf('mp4') != -1;
+          var isMp4 = type.indexOf('mp4') !== -1;
           if (isMp4) return source.src;
         }
         return null;
@@ -599,7 +606,7 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'Hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
-  'Lyrics for lyrics, calm'], 2, 27);
+  'Lyrics for lyrics, calm'], 3, 0);
 
 
 var Import = new Game('import', 'Import', true);

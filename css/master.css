@@ -1,77 +1,113 @@
-.code-block {
-    width: 100%;
-    height: 150px;
-    border: 1px solid black;
-    margin: 40px auto;
-    box-sizing: border-box;
+html, body {
+  height: 100%
+  width: 100%;
 }
 
-main {
-    width: 300px;
-    margin: 30px auto;
-    font-size: 13px;
-    font-weight: bold;
-    text-align: center;
+body {
+  margin: 0;
+  padding: 0;
+  background: #0080ff;
+  font-family: 'Bitter', serif;
+  color: #FAFAFA;
 }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    border: 2px black solid;
-    box-sizing: border-box;
+nav {
+  width: 100%;
+  line-height: 60px;
+  height: 60px;
+  overflow: hidden;
 }
 
-span.correct {
-    color: green;
+nav ul {
+  float: right;
+  margin: 0;
 }
 
-.lyric-container {
-    height: 300px;
-    border: 1px black solid;
-    margin: 10px;
-    width: 279px;
-    position: relative;
-    overflow: hidden;
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+  font-size: 20px;
+  padding: 0 20px;
+}
+
+.lyrics-container {
+  height: 300px;
+  border: 2px black solid;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
 }
 
 .lyric-container div {
-    border: 1px red solid;
-    position: absolute;
-    width: 100%;
+  border: 1px red solid;
+  position: absolute;
+  width: 100%;
 }
+
+/*.code-block {
+  width: 100%;
+  height: 150px;
+  border: 1px solid black;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+main {
+  width: 300px;
+  margin: 30px auto;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  border: 2px black solid;
+  box-sizing: border-box;
+}
+
+span.correct {
+  color: green;
+}
+
+.lyric-container {
+  height: 300px;
+  border: 1px black solid;
+  margin: 10px;
+  width: 279px;
+  position: relative;
+  overflow: hidden;
+}
+
+
 
 .lyric-container-container {
 }
 
 video {
-    width:300px;
-    height: 117px;
+  width:300px;
+  height: 117px;
 }
 
 aside.song {
-    text-align: center;
+  text-align: center;
 }
 
 textarea#user-duration {
-    height: 30px;
+  height: 30px;
 }
 
 textarea#user-song {
-    height: 30px;
+  height: 30px;
 }
 
-.lyrics-container {
-    height: 300px;
-    border: 2px black solid;
-    margin: 10px;
-    position: relative;
-    overflow: hidden;
-}
+
 
 form#user-form {
-    margin: 10px;
+  margin: 10px;
 }
 
 .lyrics-container div {
-    position: absolute;
-}
+  position: absolute;
+}*/
