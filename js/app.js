@@ -9,20 +9,17 @@ function start(){
   Redbone.start();
 }
 
-function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
+function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
+  this.id = id;
   this.title = title;
   this.youtubeUrl = youtubeUrl;
   this.mins = mins;
   this.secs = secs;
-  this.html = '',
   this.form = '',
   this.playButton = '',
-  this.songTag = '',
   this.userLyricsHtml = '',
   this.lyricsString = '',
-  this.paragraphyHtml = [],
-  this.paragraphyTesting = [],
   this.lineTesting = [],
   this.currentCharacterIndex = 0,
   this.currentCharacterOnLineIndex = 0,
@@ -36,8 +33,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   this.numberOfLinesOnScreen = 0,
   this.linesOnScreen = [],
   this.currentCharacterIndexes = [],
-  this.stringsToRemove = ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]'],
-  this.$linesContainer = $(document.createElement('div')).addClass('lyric-container'),
+  this.stringsToRemove = ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]', '[Intro: Wiley & Bushkin]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Novelist]'],
   this.lyricsContainer = '',
   this.time = 3,
   this.hit = 0;
@@ -46,7 +42,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   this.complete = 0;
 
   this.start = function start(){
-    $('#game').html('');
+    $('main').html('').attr('id', this.id);
     this.createHtml();
     this.appendHtml();
     this.makeSubmitListen();
@@ -54,7 +50,6 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
     this.makeKeysListen();
     this.audioStuff();
     if (!userInputs) {
-      console.log('submit callback');
       this.getLyrics.bind(this)();
       this.parseLyrics.bind(this)();
       this.createLyricSpans.bind(this)();
@@ -62,6 +57,13 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
       this.handleAudio.bind(this)();
     }
   };
+
+  // this.resetPage = function resetPage(){
+  //   clearInterval(window.Redbone.checkLinePosition);
+  //   clearInterval(window.Import.checkLinePosition);
+  //   clearInterval(window.Lyrics.checkLinePosition);
+  //   $('main').html('').attr('id', this.id);
+  // };
 
   this.addToNav = function addToNav() {
     var element = document.createElement('h2');
@@ -82,7 +84,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.appendHtml = function appendHtml(){
-    $('#game').append([this.percentageContainer, this.lyricsContainer, this.form, this.playButton]);
+    $('main').append([this.percentageContainer, this.lyricsContainer, this.form, this.playButton]);
   },
 
   this.createPercentageContainer = function(){
@@ -168,17 +170,18 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.playButtonCallback = function playButtonCallback(){
+    $('#play').off();
     this.startCountDown();
     this.currentCharacterIndex = 0;
-    setInterval(this.checkLinePosition.bind(this), 500);
-    $('#play').off();
+    this.interval = setInterval(this.checkLinePosition.bind(this), 500);
+    this.interval();
   },
 
   this.startCountDown = function startCountDown(){
     var h2 = document.createElement('h2');
     $(h2).html(this.time);
     $(h2).attr('class', 'count-down');
-    $('#game').prepend(h2);
+    $('main').prepend(h2);
     this.countDown();
   },
 
@@ -215,13 +218,10 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
   this.parseLyrics = function parseLyrics(){
 
-    console.log(this);
-
     function makeLyricsAString(){
       var div = document.createElement('div');
       $(div).html(this.userLyricsHtml);
       this.lyricsString = div.textContent;
-      console.log(this);
     }
     makeLyricsAString.bind(this)();
 
@@ -304,14 +304,9 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
         span.className = this.currentCharacterOnLineIndex;
         this.currentCharacterOnLineIndex += 1;
         $(span).html(line[j]);
-        // this.paragraphyHtml.push(span);
-        // this.paragraphyTesting.push(span);
         lineTesting.push(span);
         $(lineDiv).append(span);
       }
-      // var lineBreak = document.createElement('br');
-      // this.paragraphyHtml.push(lineBreak);
-      // this.$linesContainer.append(lineDiv);
       this.lineDivs.push(lineDiv);
       this.lineTesting.push(lineTesting);
       this.currentCharacterOnLineIndex = 0;
@@ -341,7 +336,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
     }
     $(source).attr('type', 'video/mp4');
     $(video).append(source);
-    $('#game').append(video);
+    $('main').append(video);
     this.audioStuff();
   },
 
@@ -358,27 +353,31 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.checkLinePosition = function checkLinePosition(){
-    var newLine = this.lineDivs[this.newLineIndex];
-    var currentLine = this.lineDivs[this.currentLineIndex];
-    var top = this.height/(((this.linesArray.length)*this.animationDuration)/this.songDuration);
+    if ($('main').attr('id') !== this.id){
+      clearInterval(this.interval);
+      console.log($('main').attr('id'), 'interval should clear');
+    } else {
+      var newLine = this.lineDivs[this.newLineIndex];
+      var currentLine = this.lineDivs[this.currentLineIndex];
+      var top = this.height/(((this.linesArray.length)*this.animationDuration)/this.songDuration);
 
-    //should new line be sent out
-    var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
-    if(pix > top){
-      this.newLineIndex += 1;
-      this.displayNewLine();
-    }
+      //should new line be sent out
+      var pix = parseInt($(newLine).attr('style').split(' ')[1].split('p')[0]);
+      if(pix > top){
+        this.newLineIndex += 1;
+        this.displayNewLine();
+      }
 
-    //should old line be removed
-    pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-    if (pix === this.height){
-      console.log('once');
-      this.updatePercentage();
-      $(this.lineDivs[this.currentLineIndex]).remove();
-      this.linesOnScreen.pop();
-      this.currentCharacterIndexes.pop();
-      this.currentLineIndex += 1;
-      this.numberOfLinesOnScreen -= 1;
+      //should old line be removed
+      pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
+      if (pix === this.height){
+        this.updatePercentage();
+        $(this.lineDivs[this.currentLineIndex]).remove();
+        this.linesOnScreen.pop();
+        this.currentCharacterIndexes.pop();
+        this.currentLineIndex += 1;
+        this.numberOfLinesOnScreen -= 1;
+      }
     }
   },
 
@@ -391,7 +390,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.testIfCorrectKey = function testIfCorrectKey(e){
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 50; i++) {
       var className = this.linesOnScreen[i].className;
       var selector = '.' + className + ' span:nth-child(' + (this.currentCharacterIndexes[i] + 1) +')';
       if ($(selector)[0].innerHTML === String.fromCharCode(e.which)){
@@ -446,10 +445,68 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
 }
 
 
-var Redbone = new Game('Chilled', false, 'https://www.youtube.com/watch?v=Kp7eSUU9oy8', ['Daylight',
-  'I wake up feeling like you won\'t play right','I used to know, but now that shit don\'t feel right','It made me put away my pride','So long','You made a nigga wait for some, so long','You make it hard for a boy like that to know wrong','I\'m wishing I could make this mine, oh','[Pre-Chorus]','If you want it, yeah','You can have it, oh, oh, oh','If you need it, oooh','We can make it, oh','If you want it','You can have it','[Chorus]','But stay woke','Niggas creepin','They gon\' find you','Gon\' catch you sleepin\' (Oooh)','Now stay woke','Niggas creepin','Now don\'t you close your eyes','Too late','You wanna make it right, but now it\'s too late','My peanut butter chocolate cake with Kool-Aid','I\'m trying not to waste my time','[Pre-Chorus]','If you want it, oh','You can have it, you can have it','If you need it','You better believe in something','We can make it','If you want it','You can have it, aaaaah','[Chorus]','But stay woke','Niggas creepin\'','They gon\' find you','Gon\' catch you sleepin\'','Put your hands up on me','Now stay woke','Niggas creepin\'','Now, don\'t you close your eyes','But stay woke','Niggas creepin\'','They gon\' find you','Gon\' catch you sleepin\', ooh','Now stay woke','Niggas creepin\'','Now, don\'t you close your eyes','Baby get so scandalous, oh','How\'d it get so scandalous?','Oh, oh, baby, you...','How\'d it get...','How\'d it get so scandalous?','Ooh, we get so scandalous','But stay woke','But stay woke'], 5, 27);
+var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/watch?v=Kp7eSUU9oy8', [
+  'Daylight',
+  'I wake up feeling like you won\'t play right',
+  'I used to know, but now that shit don\'t feel right',
+  'It made me put away my pride',
+  'So long',
+  'You made a nigga wait for some, so long',
+  'You make it hard for a boy like that to know wrong',
+  'I\'m wishing I could make this mine, oh',
+  '[Pre-Chorus]',
+  'If you want it, yeah',
+  'You can have it, oh, oh, oh',
+  'If you need it, oooh',
+  'We can make it, oh',
+  'If you want it',
+  'You can have it',
+  '[Chorus]',
+  'But stay woke',
+  'Niggas creepin',
+  'They gon\' find you',
+  'Gon\' catch you sleepin\' (Oooh)',
+  'Now stay woke',
+  'Niggas creepin',
+  'Now dont you close your eyes',
+  'Too late',
+  'You wanna make it right, but now it\'s too late',
+  'My peanut butter chocolate cake with Kool-Aid',
+  'I\'m trying not to waste my time',
+  '[Pre-Chorus]',
+  'If you want it, oh',
+  'You can have it, you can have it',
+  'If you need it',
+  'You better believe in something',
+  'We can make it',
+  'If you want it',
+  'You can have it, aaaaah',
+  '[Chorus]',
+  'But stay woke',
+  'Niggas creepin\'',
+  'They gon\' find you',
+  'Gon\' catch you sleepin\'',
+  'Put your hands up on me',
+  'Now stay woke',
+  'Niggas creepin\'',
+  'Now, don\'t you close your eyes',
+  'But stay woke',
+  'Niggas creepin\'',
+  'They gon\' find you',
+  'Gon\' catch you sleepin\', ooh',
+  'Now stay woke',
+  'Niggas creepin\'',
+  'Now, don\'t you close your eyes',
+  'Baby get so scandalous, oh',
+  'How\'d it get so scandalous?',
+  'Oh, oh, baby, you...',
+  'How\'d it get...',
+  'How\'d it get so scandalous?',
+  'Ooh, we get so scandalous',
+  'But stay woke',
+  'But stay woke'], 5, 27);
 
-var Lyrics = new Game('Impossible', false, 'https://www.youtube.com/watch?v=q5jGFujaJ40', [
+var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/watch?v=q5jGFujaJ40', [
   '[Intro: Wiley & Bushkin]',
   'Come off the stage! Move!',
   'They don\'t want to hear you! They don\'t want to hear you!',
@@ -545,4 +602,4 @@ var Lyrics = new Game('Impossible', false, 'https://www.youtube.com/watch?v=q5jG
   'Lyrics for lyrics, calm'], 2, 27);
 
 
-var Import = new Game('Import', true);
+var Import = new Game('import', 'Import', true);
