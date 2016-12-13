@@ -170,9 +170,7 @@ function Game(title, userInputs, youtubeUrl, linesArray, mins, secs) {
     this.startCountDown();
     this.currentCharacterIndex = 0;
     setInterval(this.checkLinePosition.bind(this), 500);
-    $('#play').on('click', function(){
-      //do nothing
-    });
+    $('#play').off();
   },
 
   this.startCountDown = function startCountDown(){
