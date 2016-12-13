@@ -28,11 +28,11 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   this.currentLineIndex = 0,
   this.songDuration = 0,
   this.animationDuration = 30000,
-  this.height = 300,
+  this.height = 400,
   this.numberOfLinesOnScreen = 0,
   this.linesOnScreen = [],
   this.currentCharacterIndexes = [],
-  this.stringsToRemove = ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]', '[Intro: Wiley & Bushkin]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Novelist]'],
+  this.stringsToRemove = ['', '[Verse]', '[Verse 1]', '[Verse 2]', '[Verse 3]', '[Verse 4]', '[Verse 5]', '[Bridge 1]', '[Bridge 2]', '[Pre-Hook]','[Outro]', '[Hook]', '[Intro: Wiley & Bushkin]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Skepta]', '[, Skepta]', '[Ver, Novelist]', '[Pre-Chorus]'],
   this.lyricsContainer = '',
   this.time = 3,
   this.hit = 0;
@@ -83,11 +83,12 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.appendHtml = function appendHtml(){
-    $('main').append([this.percentageContainer, this.lyricsContainer, this.form, this.playButton]);
+    $('main').append([this.playButton, this.percentageContainer, this.lyricsContainer, this.form]);
   },
 
   this.createPercentageContainer = function(){
     var div = document.createElement('div');
+    $(div).attr('class', 'score');
     var h1 = document.createElement('h2');
     $(h1).attr('id', 'hit');
     $(h1).html('hit:');
@@ -341,13 +342,14 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
   this.displayNewLine = function displayNewLine(){
     this.numberOfLinesOnScreen += 1;
+    $(this.lineDivs[this.newLineIndex]).css('top', -100);
     $('.lyrics-container').prepend(this.lineDivs[this.newLineIndex]);
     this.linesOnScreen.unshift(this.lineDivs[this.newLineIndex]);
     this.currentCharacterIndexes.unshift(0);
 
     //potential for animate function when llineDivs vs LineTesting resolved
     $(this.lineDivs[this.newLineIndex]).animate({
-      top: this.height
+      top: this.height*1.2
     }, this.animationDuration, 'linear' );
   },
 
@@ -373,7 +375,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
       //should old line be removed
       pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-      if (pix === this.height){
+      if (pix > this.height*1.2){
         this.updatePercentage();
         $(this.lineDivs[this.currentLineIndex]).remove();
         this.linesOnScreen.pop();
