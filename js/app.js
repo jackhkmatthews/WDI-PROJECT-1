@@ -9,7 +9,8 @@ function start(){
   Redbone.start();
 }
 
-function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
+function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPath) {
+  this.songPath = songPath;
   this.id = id;
   this.title = title;
   this.youtubeUrl = youtubeUrl;
@@ -39,6 +40,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   this.total = 0;
   this.missed = 0;
   this.complete = 0;
+  this.audio;
 
   this.start = function start(){
     $('main').html('').attr('id', this.id);
@@ -70,6 +72,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
     element.innerHTML = this.title;
     element.addEventListener('click', generate.bind(this));
     function generate(){
+      this.audio.pause();
       this.start();
     }
     nav.appendChild(element);
@@ -170,16 +173,32 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
   },
 
   this.playButtonCallback = function playButtonCallback(){
+    var duration = this.time;
+    var height = this.height;
     $('#play').off();
-    $('#play').fadeOut('slow');
-    $('.lyrics-container').animate({
-      height: this.height,
-      top: 140
-    }, this.time*1000, 'swing' );
-    $('.score').animate({
-      display: 'none'
-    }, this.time*1000, 'swing');
-    console.log($('.lyrics-container')[0]);
+
+    $('#play').fadeOut((duration/2)*1000, function(){
+      $('.lyrics-container').animate({
+        height: height,
+        top: 140
+      }, ((duration/2)*1000), 'swing', function(){
+        $('.score').fadeIn(1000);
+      });
+    });
+
+
+
+
+
+    // $('#play').fadeOut('1500');
+    // $('.lyrics-container').animate({
+    //   height: this.height,
+    //   top: 140
+    // }, this.time*500, 'swing' );
+    // $('.score').animate({
+    //   display: 'none'
+    // }, this.time*1000, 'swing');
+    // console.log($('.lyrics-container')[0]);
     this.startCountDown();
     this.currentCharacterIndex = 0;
     this.interval2 = setInterval(this.checkLinePosition.bind(this), 500);
@@ -203,7 +222,13 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
     if (this.time <= 0) {
       clearInterval(this.interval);
       this.displayNewLine();
-      $('video').get(0).play();
+      if(!userInputs){
+        this.audio = new Audio(this.songPath);
+        this.audio.play();
+      } else {
+        console.log('user inputs');
+        $('video').get(0).play();
+      }
       $('.count-down').html('');
     }
   },
@@ -359,18 +384,17 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
     //potential for animate function when llineDivs vs LineTesting resolved
     $(this.lineDivs[this.newLineIndex]).animate({
-      top: this.height*1.2
+      top: this.height*1.1
     }, this.animationDuration, 'linear' );
   },
 
   this.checkLinePosition = function checkLinePosition(){
     if ($('main').attr('id') !== this.id){
       clearInterval(this.interval2);
-      console.log($('main').attr('id'), 'interval should clear');
     } else {
       var newLine = this.lineDivs[this.newLineIndex];
       var currentLine = this.lineDivs[this.currentLineIndex];
-      var top = this.height/(((this.linesArray.length)*this.animationDuration)/this.songDuration);
+      var top = (((this.songDuration/this.linesArray.length)/this.animationDuration)*(this.height*1.2))-100;
 
       // should new line be sent out
       try {
@@ -385,10 +409,9 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs) {
 
       //should old line be removed
       pix = parseInt($(currentLine).attr('style').split(' ')[1].split('p')[0]);
-      console.log(pix);
+      debugger;
       if (pix > this.height*1.1){
         this.updatePercentage();
-        console.log('should update percentage');
         $(this.lineDivs[this.currentLineIndex]).remove();
         this.linesOnScreen.pop();
         this.currentCharacterIndexes.pop();
@@ -521,7 +544,7 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'How\'d it get so scandalous?',
   'Ooh, we get so scandalous',
   'But stay woke',
-  'But stay woke'], 5, 27);
+  'But stay woke'], 5, 27, '../ChildishGambino-Redbone.mp3');
 
 var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/watch?v=q5jGFujaJ40', [
   'Come off the stage! Move!',
@@ -608,7 +631,7 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'Hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
-  'Lyrics for lyrics, calm'], 3, 0);
+  'Lyrics for lyrics, calm'], 2, 36, '../Lyrics.mp3');
 
 
 var Import = new Game('import', 'Import', true);
