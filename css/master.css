@@ -1,5 +1,6 @@
 /*blue #0080ff*/
-/*grey #efefef*/
+/*re #f03*/
+/*grey #ffffff*/
 
 
 
@@ -16,11 +17,12 @@ body {
   font-weight: bold;
   color: #fff;
   text-align: center;
-
 }
 
+
+
 header {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #0080ff;
   margin-bottom: 40px;
   box-shadow: 0px 7px 14px 2px rgba(0, 0, 0, 0.16);
@@ -61,7 +63,7 @@ nav li:hover {
   overflow: hidden;
   width: 70%;
   /* border-top: 2px solid #fff; */
-  border: 2px solid #fff;
+  border: 2px solid #ffffff;
   /* Standard syntax */
   top: 286px;
   background: #0080ff;
@@ -78,7 +80,7 @@ h1 {
 
 div.score {
   font-size: 1em;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff;
   padding: 0px 0px 0px 10px;
   position: absolute;
   margin: auto;
@@ -88,7 +90,7 @@ div.score {
   bottom: 0;
   width: 110px;
   height: 60px;
-  color: #fff;
+  color: #ffffff;
   display: none;
   background: #0080ff;
   z-index: 100;
@@ -105,7 +107,7 @@ video {
   margin-right: auto;
   left: 0;
   right: 0;
-  border: 2px solid #efefef;
+  border: 2px solid #ffffff;
   f;
   color: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 5px 40px 1px rgba(0, 0, 0, 0.2);
@@ -160,7 +162,7 @@ nav li:hover {
     width: 200px;
     background: rgb(0, 128, 255);
     border: 2px solid #fff;
-    color: #efefef;
+    color: #ffffff;
     margin: 20px 0 58px;
     position: absolute;
     margin-left: auto;
@@ -184,24 +186,27 @@ nav li:hover {
     height: 200px;
     text-align: center;
     margin: 0 auto;
+    color: white;
   }
 
   textarea#user-lyrics-html {
     width: 100%;
     box-sizing: border-box;
     background-color: #0080ff;
-    border: 2px solid #fff;
+    border: 2px solid #ffffff;
     text-align: center;
     height: 30px;
+    color: white;
   }
 
   input#youtube-url {
     width: 100%;
     box-sizing: border-box;
     background-color: #0080ff;
-    border: 2px solid #fff;
+    border: 2px solid #ffffff;
     text-align: center;
     height: 30px;
+    color: #ffffff;
   }
 
   button#submit {
@@ -211,7 +216,7 @@ nav li:hover {
     background-color: beige;
     background-color: #0080ff;
     border: 2px solid #fff;
-    color: #fff;
+    color: #ffffff;
     height: 40px;
     font-size: 12px;
   }
@@ -220,11 +225,11 @@ nav li:hover {
     outline: none;
   }
   textarea#user-lyrics-html::-webkit-input-placeholder {
-    color: #efefef;
+    color: #ffffff;
     font-size: 12px;
   }
   input#youtube-url::-webkit-input-placeholder {
-    color: #efefef;
+    color: #ffffff;
     font-size: 12px;
   }
 
@@ -232,7 +237,7 @@ nav li:hover {
     outline: none;
   }
 
-  select {margin: 4px;background: #0080ff;border: 2px solid #fff;color: #fff;border-radius: 0px;-webkit-appearance: none;padding-left: 5px;height: 30px;width: 92px;}
+  select {margin: 4px;background: #0080ff;border: 2px solid #ffffff;color: #ffffff;border-radius: 0px;-webkit-appearance: none;padding-left: 5px;height: 30px;width: 92px;}
 
   li.highlighted {
     text-decoration: underline;
@@ -244,7 +249,7 @@ nav li:hover {
 
   footer#footer {
     height: 60px;
-    background-color: #fff;
+    background-color: #ffffff;
     color: #0080ff;
   }
 
@@ -258,6 +263,4 @@ nav li:hover {
       text-align: left;
       line-height: 20px;
       font-size: 14px;
-  }
-;
   }
