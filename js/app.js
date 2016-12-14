@@ -88,16 +88,16 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
   this.createPercentageContainer = function(){
     var div = document.createElement('div');
     $(div).attr('class', 'score');
-    var h1 = document.createElement('h2');
-    $(h1).attr('id', 'hit');
-    $(h1).html('hit:');
-    var h2 = document.createElement('h2');
-    $(h2).attr('id', 'missed');
-    $(h2).html('missed:');
-    var h3 = document.createElement('h2');
-    $(h3).attr('id', 'percentage');
-    $(h3).html('percentage:');
-    $(div).append([h1, h2, h3]);
+    var p1 = document.createElement('p');
+    $(p1).attr('id', 'hit');
+    $(p1).html('hit:');
+    var p2 = document.createElement('p');
+    $(p2).attr('id', 'missed');
+    $(p2).html('missed:');
+    var p3 = document.createElement('p');
+    $(p3).attr('id', 'percentage');
+    $(p3).html('complete:');
+    $(div).append([p1, p2, p3]);
     return div;
   },
 
@@ -176,7 +176,10 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     $('#play').fadeOut((duration/2)*1000, function(){
       $('.lyrics-container').animate({
         height: height,
-        top: 140
+        top: 140,
+        borderColor: '#efefef'
+        // borderWidth: 2,
+        // borderStyle: 'solid',
       }, ((duration/2)*1000), 'swing', function(){
         $('.score').fadeIn(1000);
       });
@@ -416,7 +419,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     this.complete = this.hit / this.total;
     $('#hit').html('hit: ' + this.hit);
     $('#missed').html('missed: ' + this.missed);
-    $('#percentage').html('percentage: ' + Math.round(this.complete*100) + '%');
+    $('#percentage').html('complete: ' + Math.round(this.complete*100) + '%');
   },
 
   this.audioStuff = function audioStuff(){
