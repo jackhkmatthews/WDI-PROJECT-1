@@ -181,10 +181,16 @@ nav li:hover {
 
   form#user-form {
     width: 200px;
-    height: 200px;
+    height: 145px;
     text-align: center;
     margin: 0 auto;
-    color: white;
+    color: #ffffff;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: -153px;
   }
 
   textarea#user-lyrics-html {
@@ -287,4 +293,5 @@ nav li:hover {
 
   main {
     margin-top: 10vh;
+    position: relative;
 }
