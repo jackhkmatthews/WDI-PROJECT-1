@@ -179,7 +179,8 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
 
     $('#play').fadeOut((duration/2)*1000, function(){
       $('.lyrics-container').animate({
-        height: height
+        height: height,
+        borderWidth: 2
       }, ((duration/2)*1000), 'swing', function(){
         $('.score').fadeIn(1000);
       });
