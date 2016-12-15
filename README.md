@@ -1,43 +1,88 @@
-**WDIPROJECT1**
+#GA WDI24 Project 1 - Typing Karaoke
 
-General Assembly Web Development Immersive course project 1 - HTML, CSS and JavaScript Game
+##Brief
 
-**typing karaoke**
+To produce an in browser game using the HTML, CSS, JavaScript and jQuery skills acquired during the first two weeks of the Web Development Immersive course.
 
-text blocks pass from the top of the screen to the bottom.
+##Game
 
-user must type the text before it disappears from the screen.
+###Overview
+I decided to create a music based typing game similar to karaoke where the user can select a song of their choice to test their typing speed.  Hence combining my musical interests with my want to improve my typing ability.
 
-user receives a percentage score at the end of the game.  similar to guitar hero.
+The user is continually displayed the number of characters hit, missed and a completion rate. The aim of the game is to keep this completion rate as near as possible to 100%.
 
-backing track is playing.
+###Screenshots
 
+Home Page
+![screen shot 2016-12-14 at 10 03 31](https://cloud.githubusercontent.com/assets/20629455/21177873/f161d160-c1e4-11e6-82c5-96d69390f574.png)
 
-**needs:**
+'Chilled' level lyrics waterfall with highlighted characters
+![screen shot 2016-12-14 at 10 04 11](https://cloud.githubusercontent.com/assets/20629455/21177872/f1619f42-c1e4-11e6-81b8-10da088712ae.png)
 
-1. light up the letters as the user correctly types them
-2. only allows the next character to light up if the previous one has been typed correctly.  If user falls being can reset.
-3. congratulation message once the user reaches the end
-4. text blocks moving from top to bottom
-5. text blocks being written to the dom and then removed?
-6. mute button
-7. pause button 
+'Impossible' level lyric waterfall
+![screen shot 2016-12-14 at 10 04 53](https://cloud.githubusercontent.com/assets/20629455/21177874/f16203b0-c1e4-11e6-94fb-7629d2dff81c.png)
 
-**nice to have:**
+Import form
+![screen shot 2016-12-14 at 10 05 08](https://cloud.githubusercontent.com/assets/20629455/21177875/f16704b4-c1e4-11e6-927d-08815ac2d429.png)
 
-1. if user fails to complete a text block can start on the next incoming block / some intelligent logic about when the user is typing which block (number the blocks/unique starting characters
-2. two genres with different song, pages and differently toned designs (light vs dark, easy vs hard)
-3. speed up and slow down
-4. percentage score at the end
-5. sound effects for correct and incorrect key presses
-6. box showing what the user has typed, i.e will have to match code exactly
-7. score cookie / leader board
-8. generate code lyrics from any set of lyrics and allow user input of audio and lyrics.
-9. each incorrect keypress added to a counter for an accuracy score
+###Mechanics
+####Importing lyrics
+The user is able to copy and paste the outer html of the lyrics they would like to use.
 
+On 'submit' the html:
 
-
+1. lyric string is split into individual lines by  `<br>` and stored in an array. 
+2. Common unwanted elements (e.g '[Chorus]') are removed.
+3. each element (line) in the array is split into characters
+4. each character is placed into a span
+5. each line of spans is stored 
 
 
-<p>Daylight<br>I wake up feeling like you won't play right<br>I used to know, but now that shit don't feel right<br>It made me put away my pride<br>So long<br>You made a nigga wait for some, so long<br>You make it hard for a boy like that to know wrong<br>I'm wishing I could make this mine, oh<br></p>
-<p>If you want it, yeah<br>You can have it, oh, oh, oh<br>If you need it, ooh<br>We can make it, oh<br>If you want it<br>You can have it<br></p><p>But stay woke<br>Niggas creepin'<br>They gon' find you<br>Gon' catch you sleepin' (oh)<br>Now stay woke<br>Niggas creepin'<br>Now don't you close your eyes<br></p><p>Too late<br>You wanna make it right, but now it's too late<br>My peanut butter chocolate cake with Kool-Aid<br>I'm trying not to waste my time<br></p>
+
+The lyrics of the song are parsed into individual characters and displayed line by line.
+
+Each user key press is then compared to the lines on screen.  If the user types correctly the relevant character is highlighted.
+
+
+##Wins
+key detection
+lyric and sound importing
+modular
+
+##Known issues to be addressed
+footer - no links and floating
+header - no link to homepage
+css
+multiple keys get highlighted
+sound sometimes doesnt load
+screen sixes mess it up
+reset between instances
+score
+animation between instances
+used more for each instead of loops!
+
+
+##Added features
+cycling of colours
+different colours for chilled and impossible
+song search
+social media share
+win animation
+line timing improvements
+responsive
+proper app reset between levels
+health
+flash screen when incorrect key pressed
+
+
+presentations
+
+say what you enjoyed first!
+
+ideas: virtual pet graph
+
+call backs, sequential functions?
+
+collision logic
+
+

@@ -75,19 +75,18 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
   };
 
   this.createHtml = function createHtml(){
-    this.percentageContainer = this.createPercentageContainer();
     this.lyricsContainer = this.createLyricsContainer();
     this.form = this.createForm();
     this.playButton = this.createPlayButton();
   },
 
   this.appendHtml = function appendHtml(){
-    $('main').append([this.playButton, this.percentageContainer, this.lyricsContainer, this.form]);
+    $('main').append([this.playButton, this.lyricsContainer, this.form]);
   },
 
   this.createPercentageContainer = function(){
-    var div = document.createElement('div');
-    $(div).attr('class', 'score');
+    var scoreDiv = document.createElement('div');
+    $(scoreDiv).attr('class', 'score');
     var p1 = document.createElement('p');
     $(p1).attr('id', 'hit');
     $(p1).html('hit:');
@@ -97,14 +96,19 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     var p3 = document.createElement('p');
     $(p3).attr('id', 'percentage');
     $(p3).html('complete:');
-    $(div).append([p1, p2, p3]);
-    return div;
+    $(scoreDiv).append([p1, p2, p3]);
+    return scoreDiv;
   },
 
   this.createLyricsContainer = function createLyricsContainer(){
     var div = document.createElement('div');
     $(div).addClass('lyrics-container');
-    return div;
+    var divContainer = document.createElement('div');
+    $(divContainer).addClass('lyrics-container-contianer');
+    this.percentageContainer = this.createPercentageContainer();
+    $(divContainer).append(this.percentageContainer);
+    $(divContainer).append(div);
+    return divContainer;
   },
 
   this.createForm = function createForm(){
@@ -175,15 +179,15 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
 
     $('#play').fadeOut((duration/2)*1000, function(){
       $('.lyrics-container').animate({
-        height: height,
-        top: 140,
-        borderColor: '#efefef'
-        // borderWidth: 2,
-        // borderStyle: 'solid',
+        height: height
       }, ((duration/2)*1000), 'swing', function(){
         $('.score').fadeIn(1000);
       });
+      $('.lyrics-container-contianer').animate({
+        marginTop: '5vh'
+      }, ((duration/1.4)*1000));
     });
+
     this.startCountDown();
     this.currentCharacterIndex = 0;
     this.interval2 = setInterval(this.checkLinePosition.bind(this), 500);
