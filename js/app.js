@@ -239,6 +239,7 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     this.createLyricSpans.bind(this)();
     this.getDuration.bind(this)();
     this.handleAudio.bind(this)();
+    this.createIframe();
   },
 
   this.getLyrics = function getLyrics() {
@@ -343,6 +344,10 @@ function Game(id, title, userInputs, youtubeUrl, linesArray, mins, secs, songPat
     $('main').append(video);
     this.audioStuff();
   },
+
+  this.createIframe = function createIframe(){
+    var iframe = document.createElement('iframe');
+  };
 
   this.displayNewLine = function displayNewLine(){
     this.numberOfLinesOnScreen += 1;
@@ -512,7 +517,7 @@ var Redbone = new Game('redbone', 'Chilled', false, 'https://www.youtube.com/wat
   'How\'d it get so scandalous?',
   'Ooh, we get so scandalous',
   'But stay woke',
-  'But stay woke'], 5, 27, '../ChildishGambino-Redbone.mp3');
+  'But stay woke'], 5, 27, './ChildishGambino-Redbone.mp3');
 
 var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/watch?v=q5jGFujaJ40', [
   'Come off the stage! Move!',
@@ -599,7 +604,7 @@ var Lyrics = new Game('lyrics', 'Impossible', false, 'https://www.youtube.com/wa
   'Hear me on the radio, wah gwan?',
   'See me on the TV, hi mum',
   'Murk MCs when the mic\'s in my palm',
-  'Lyrics for lyrics, calm'], 2, 36, '../Lyrics.mp3');
+  'Lyrics for lyrics, calm'], 2, 36, './Lyrics.mp3');
 
 
 var Import = new Game('import', 'Import', true);
